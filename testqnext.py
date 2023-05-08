@@ -7,7 +7,16 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 # Especifica la ruta del controlador de Chrome
-pathDriver = "112/chromedriver.exe"
+pathDriver = "113/chromedriver.exe"
+
+#Especifica Directorio de descarga
+options = webdriver.ChromeOptions()
+options.add_experimental_option("prefs", {
+    "download.default_directory": r"C:\Users\Usuario\Documents\terceriza\Robot\descargasPython",
+    "download.prompt_for_download": False,
+    "download.directory_upgrade": True,
+    "safebrowsing.enabled": True
+})
 
 # Especifica los detalles de la URL, nombre de usuario y contraseña
 url = "https://qnexweb.com/lapositiva/in-config"
@@ -15,7 +24,7 @@ username = "michael.luque"
 password = "73031615"
 
 # Configura el controlador de Chrome y abre la URL especificada
-driver = webdriver.Chrome(executable_path=pathDriver)
+driver = webdriver.Chrome(executable_path=pathDriver, options=options)
 driver.get(url)
 
 # Espera a que se cargue completamente la página web

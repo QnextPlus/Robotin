@@ -6,6 +6,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from twocaptcha import TwoCaptcha
+from PIL import Image
+from io import BytesIO
 
 # Especifica la ruta del controlador de Chrome
 pathDriver = "113/chromedriver.exe"
@@ -20,7 +22,7 @@ options.add_experimental_option("prefs", {
 })
 
 # Especifica los detalles de la URL, nombre de usuario y contraseña
-url = "https://10.95.224.27:9083/bicp/login.action?logoutReason=sessionTimeout"
+url = "https://10.95.224.27:9083/bicp/login.action"
 username = "E8234180"
 password = "RoboT$n2023%"
 
@@ -41,27 +43,30 @@ WebDriverWait(driver, 5)\
                                       'a#proceed-link')))\
     .click()
 
-# Busca los campos de usuario y contraseña y los llena con los valores especificados
-username_field = driver.find_element(By.NAME, 'username')
-password_field = driver.find_element(By.NAME, 'password')
-username_field.send_keys(username)
-password_field.send_keys(password)
-
-img = driver.find_element(By.XPATH,'//*[@id="validateimg"]')
-src = img.get_attribute('src')
-img = requests.get(src)
-with open('captcha.jpg', 'wb') as f:
-    f.write(img.content)
+# Busca el elemento deseado utilizando un selector CSS
+element = driver.find_element(By.ID,'validateimg')
+# Captura una imagen del elemento
+element.screenshot('capture.jpg')
 
 solver = TwoCaptcha('8f63da7191fe11e63148c3d8b28c71f2')
 
-id = solver.send(file='captcha.jpg')
-time.sleep(20)
+id = solver.send(file='capture.jpg')
+time.sleep(10)
 
 code = solver.get_result(id)
 
 code_field = driver.find_element(By.XPATH, '//*[@id="validate"]')
 code_field.send_keys(code)
+
+# Busca los campos de usuario y contraseña y los llena con los valores especificados
+username_field = driver.find_element(By.ID, 'username')
+password_field = driver.find_element(By.ID, 'password')
+submit_button = driver.find_element(By.XPATH, '//*[@id="submitBtn"]/a')
+
+username_field.send_keys(username)
+password_field.send_keys(password)
+
+submit_button.click()
 
 time.sleep(10000)
 

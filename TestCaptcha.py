@@ -28,8 +28,6 @@ img = requests.get(src)
 with open('captcha.jpg', 'wb') as f:
     f.write(img.content)
 
-
-
 solver = TwoCaptcha('8f63da7191fe11e63148c3d8b28c71f2')
 
 id = solver.send(file='captcha.jpg')

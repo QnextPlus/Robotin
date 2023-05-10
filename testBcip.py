@@ -5,6 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 from twocaptcha import TwoCaptcha
 from PIL import Image
 from io import BytesIO
@@ -23,8 +24,8 @@ options.add_experimental_option("prefs", {
 
 # Especifica los detalles de la URL, nombre de usuario y contraseña
 url = "https://10.95.224.27:9083/bicp/login.action"
-username = "E8234180"
-password = "RoboT$n2023%"
+username = "E8234180X"
+password = "RoboT$n2023X%"
 
 
 # Configura el controlador de Chrome y abre la URL especificada
@@ -43,6 +44,28 @@ WebDriverWait(driver, 5)\
                                       'a#proceed-link')))\
     .click()
 
+time.sleep(2)
+#cierra ventana emergente
+elemento_cierre = driver.find_element(By.XPATH, '//*[@id="tipClose"]')
+elemento_cierre.click()
+
+# Busca los campos de usuario y contraseña y los llena con los valores especificados
+campoInputUser = driver.find_element(By.ID, 'username2')
+campoInputUser.clear()
+actions = ActionChains(driver)
+actions.move_to_element(campoInputUser)
+actions.click()
+actions.send_keys(username)
+actions.perform()
+
+campoInputPassword = driver.find_element(By.ID, 'password2')
+campoInputPassword.clear()
+actions = ActionChains(driver)
+actions.move_to_element(campoInputPassword)
+actions.click()
+actions.send_keys(password)
+actions.perform()
+
 # Busca el elemento deseado utilizando un selector CSS
 element = driver.find_element(By.ID,'validateimg')
 # Captura una imagen del elemento
@@ -58,14 +81,8 @@ code = solver.get_result(id)
 code_field = driver.find_element(By.XPATH, '//*[@id="validate"]')
 code_field.send_keys(code)
 
-# Busca los campos de usuario y contraseña y los llena con los valores especificados
-username_field = driver.find_element(By.ID, 'username')
-password_field = driver.find_element(By.ID, 'password')
+#presiona boton submit
 submit_button = driver.find_element(By.XPATH, '//*[@id="submitBtn"]/a')
-
-username_field.send_keys(username)
-password_field.send_keys(password)
-
 submit_button.click()
 
 time.sleep(10000)

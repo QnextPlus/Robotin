@@ -18,7 +18,7 @@ pathDriver = "113/chromedriver.exe"
 #Especifica Directorio de descarga
 options = webdriver.ChromeOptions()
 options.add_experimental_option("prefs", {
-    "download.default_directory": r"C:\Users\Usuario\Documents\terceriza\Robot\descargasPython",
+    "download.default_directory": r"C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\bicp\401",
     "download.prompt_for_download": False,
     "download.directory_upgrade": True,
     "safebrowsing.enabled": True
@@ -159,123 +159,124 @@ resourceManager = driver.find_element(By.ID, 's_800')
 resourceManager.click()
 time.sleep(5)
 
-#Selecciona searchResource para busqueda de campaña
-#document.querySelector("#searchResource").click();
-""""
-elemento = driver.find_element(By.ID, "tabPage_800_title")
-coordenadas = elemento.location
-dimensiones = elemento.size
-x = coordenadas['x'] + dimensiones['width'] // 2
-y = coordenadas['y'] + dimensiones['height'] // 2
-
-print(f'x: {x}, y:{y}')
-"""
-#x,y coordenadas donde se encuentra el searchResource
-x = 216 * 2.5
-y =  (49 * 2) * 2.4
-pyautogui.moveTo(x, y)
-pyautogui.click()
+driver.switch_to.frame('tabPage_800_iframe')
+driver.switch_to.frame('container')
+lupa = driver.find_element(By.ID,'searchResource')
+lupa.click()
 time.sleep(1)
-pyautogui.click()
+driver.switch_to.default_content()
+driver.switch_to.default_content()
+
+codigoCampana = 401
+driver.switch_to.frame('searchResource_iframe')
+textBox = driver.find_element(By.ID,'searchCondtion_input_value')
+textBox.send_keys(codigoCampana)
 time.sleep(1)
 
-#Codigo de la campaña
-codigoCampana = '1259'
+searchBtn = driver.find_element(By.ID, 'searchBtn')
+searchBtn.click()
+time.sleep(3)
 
-#encuentra el textbox activo y envia el codigo de la campaña
-pyautogui.typewrite(codigoCampana)
-time.sleep(1)
-
-#coordenada del boton submit
-x = 216 * 2.8
-y =  (49 * 2) * 2.5
-pyautogui.moveTo(x, y)
-pyautogui.click()
-time.sleep(2)
-
-#coordenadas del reporte
-x = 216
-y =  318
-pyautogui.moveTo(x, y)
-pyautogui.click()
+reporte = driver.find_element(By.CLASS_NAME, 'grid_link1')
+reporte.click()
+driver.switch_to.default_content()
 time.sleep(5)
 
-#coordenada para entrar a la lista de reportes
-x = 216 * 4.15
-y = (49 * 2) * 2.5 * 1.75
-pyautogui.moveTo(x, y)
-pyautogui.click()
+## === BPO ===
+driver.switch_to.frame('view8adf609c6387afda01638b7f47b90570_iframe')
+
+btnCampana = driver.find_element(By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
+btnCampana.click()
 time.sleep(2)
 
-#coordenada para elegir reporte a seleccionar
-x = 216 * 1.39
-y = (49 * 2) * 2.5 * 1.85
-pyautogui.moveTo(x, y)
-pyautogui.click()
+#desmarca selecion Default All
+checkBoxDefault = driver.find_element(By.CSS_SELECTOR, 'input[type="checkbox"][value="9999"]')
+checkBoxDefault.click()
+time.sleep(1)
+
+#Selecciona BPO
+checkBoxCampana = driver.find_element(By.XPATH, '//div[contains(@id, "paramValueOptionsDiv")]/div[6]/input')
+checkBoxCampana.click()
+time.sleep(1)
+
+BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+BotonOk.click()
+time.sleep(1)
+
+## === Campaign ===
+btnCampana = driver.find_element(By.XPATH, '//*[@id="CampaignViewControl"]/table/tbody/tr/td[5]/input')
+btnCampana.click()
 time.sleep(2)
 
-#coordenada boton ok
-x = 216 * 2.15
-y = (49 * 2) * 2.5 * 2.6
-pyautogui.moveTo(x, y)
-pyautogui.click()
+#desmarca selecion Default All
+checkBoxDefault = driver.find_element(By.CSS_SELECTOR, 'input[type="checkbox"][value="9999"]')
+checkBoxDefault.click()
+time.sleep(1)
+
+#ingresar texto busqueda en textbox
+texto = 'OUTBPOPERETEN'
+textBox = driver.find_element(By.NAME, 'startwith')
+textBox.send_keys(texto)
+time.sleep(1)
+
+botonSearch = driver.find_element(By.NAME, 'search')
+botonSearch.click()
 time.sleep(2)
 
-#coordenada boton ok para ir al excel
-x = 216 * 2.55
-y = (49 * 2) * 2.5 * 2.45
-pyautogui.moveTo(x, y)
-pyautogui.click()
+#Selecciona Campaign
+checkBoxCampana = driver.find_element(By.XPATH, '//div[contains(@id, "paramValueOptionsDiv")]/div[1]/input')
+checkBoxCampana.click()
+time.sleep(1)
+
+BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+BotonOk.click()
+time.sleep(1)
+
+# === Agent Workgroup ===
+btnCampana = driver.find_element(By.XPATH, '//*[@id="Agent WorkgroupViewControl"]/table/tbody/tr/td[5]/input')
+btnCampana.click()
+time.sleep(2)
+
+checkBox1034 = driver.find_element(By.CSS_SELECTOR, 'input[type="checkbox"][value="1034"]')
+checkBox1034.click()
+time.sleep(1)
+
+BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+BotonOk.click()
+time.sleep(1)
+
+
+BotonOk2 = driver.find_element(By.ID, 'rpt_param_OkBtn')
+BotonOk2.click()
 time.sleep(10)
 
-#coordenada boton descarga del archivo
-x = 216 * 4.1
-y = (49 * 2) * 2.1
-pyautogui.moveTo(x, y)
-pyautogui.click()
+#Descarga
+btnDowloand = driver.find_element(By.CLASS_NAME, 'ico_download')
+btnDowloand.click()
 time.sleep(1)
 
-#coordenada formato excel
-x = 216 * 4.1
-y = (49 * 2) * 2.9
-pyautogui.moveTo(x, y)
-pyautogui.click()
+descargarExcel = driver.find_element(By.ID, 'downFullExcelMenuItemLiId')
+descargarExcel.click()
 time.sleep(1)
 
-#coordenada formato excel 2007 - 2013
-x = 216 * 2.5
-y = (49 * 2) * 2.5 * 1.9
-pyautogui.moveTo(x, y)
-pyautogui.click()
+excel2013 = driver.find_element(By.ID, 'downExcel2007Id')
+excel2013.click()
 time.sleep(1)
 
-#coordenada para descargar el excel final
-x = 216 * 2.3
-y = (49 * 2) * 2.5 * 2.15
-pyautogui.moveTo(x, y)
-pyautogui.click()
-time.sleep(10)
+confirmacionFinal = driver.find_element(By.ID, 'btnOk_downExcel2003Or2007WinId')
+confirmacionFinal.click()
+time.sleep(15)
+driver.switch_to.default_content()
 
 #Cierra la aplicacion
 fun_logout = driver.find_element(By.ID, 'fun_logout')
 fun_logout.click()
 time.sleep(1)
 
-#confirma cierre de sesion
-x = 216 * 2.25
-y =  (49 * 2) * 3.6
-pyautogui.moveTo(x, y)
-pyautogui.click()
-time.sleep(1)
-
-#Borra todas las cookies
-driver.delete_all_cookies()
+confirmaCierreSesion = driver.find_element(By.XPATH, '//*[@id="winmsg0"]/div/div[2]/div[3]/div[3]/span[1]/div/div')
+confirmaCierreSesion.click()
 time.sleep(3)
 
 driver.quit()
 
 print('Descarga Exitosa')
-exit()
-
-
-

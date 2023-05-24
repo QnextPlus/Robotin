@@ -14,6 +14,7 @@ import pyautogui
 import os
 import glob
 import shutil
+from datetime import datetime, timedelta
 
 #Funcion que reubicará las descargas en sus respectivas carpetas
 def renombrarReubicar(nuevoNombre, carpetaDestino):
@@ -407,6 +408,241 @@ def reporte401(xpathBPO, txtCampana, xpathCampana, xpathAgentWorkgroup = 'noDefi
 
 # +++++ Fin Funcion Reporte 401 +++++
 
+# +++++ 3. Funcion para descargar Reporte 112 +++++
+def reporte112(xpathBPO):
+    #Menu principal
+    systemMenu = driver.find_element(By.ID, 'systemMenu')
+    systemMenu.click()
+
+    time.sleep(1)
+    #selecciona Resource manager del menu principal
+    resourceManager = driver.find_element(By.ID, 's_800')
+    resourceManager.click()
+    time.sleep(5)
+
+    driver.switch_to.frame('tabPage_800_iframe')
+    driver.switch_to.frame('container')
+    lupa = driver.find_element(By.ID,'searchResource')
+    lupa.click()
+    time.sleep(1)
+    driver.switch_to.default_content()
+    driver.switch_to.default_content()
+
+    codigoCampana = 112
+    driver.switch_to.frame('searchResource_iframe')
+    textBox = driver.find_element(By.ID,'searchCondtion_input_value')
+    textBox.send_keys(codigoCampana)
+    time.sleep(1)
+
+    searchBtn = driver.find_element(By.ID, 'searchBtn')
+    searchBtn.click()
+    time.sleep(3)
+
+    reporte = driver.find_element(By.CLASS_NAME, 'grid_link1')
+    reporte.click()
+    driver.switch_to.default_content()
+    time.sleep(5)
+
+    # === BPO ===
+    #Seleccionar campaña
+    driver.switch_to.frame('view8adf609c54f300b50154f46383e501a8_iframe')
+    btnCampana = driver.find_element(By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
+    btnCampana.click()
+    time.sleep(2)
+
+    #desmarca toda la selecion por Default SelectAll
+    checkBoxselectAll = driver.find_element(By.CSS_SELECTOR, 'input[type="checkbox"][value="selectAll"]')
+    checkBoxselectAll.click()
+    checkBoxselectAll.click()
+    time.sleep(1)
+
+    #Selecciona BPO
+    checkBoxBPO = driver.find_element(By.XPATH, xpathBPO)
+    checkBoxBPO.click()
+    time.sleep(1)
+
+    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk.click()
+    time.sleep(1)
+
+    BotonOk2 = driver.find_element(By.ID, 'rpt_param_OkBtn')
+    BotonOk2.click()
+    time.sleep(10)
+
+    #Descarga
+    btnDowloand = driver.find_element(By.CLASS_NAME, 'ico_download')
+    btnDowloand.click()
+    time.sleep(1)
+
+    descargarExcel = driver.find_element(By.ID, 'downFullExcelMenuItemLiId')
+    descargarExcel.click()
+    time.sleep(1)
+
+    excel2013 = driver.find_element(By.ID, 'downExcel2007Id')
+    excel2013.click()
+    time.sleep(1)
+
+    confirmacionFinal = driver.find_element(By.ID, 'btnOk_downExcel2003Or2007WinId')
+    confirmacionFinal.click()
+    time.sleep(15)
+    driver.switch_to.default_content()
+
+    cerrarInputParametros = driver.find_element(By.ID, 'view8adf609c54f300b50154f46383e501a8_close')
+    cerrarInputParametros.click()
+    time.sleep(2)
+
+    cerrarSearchResourse = driver.find_element(By.ID, 'searchResource_close')
+    cerrarSearchResourse.click()
+    time.sleep(2)
+
+    cerrarResourseManager = driver.find_element(By.ID, 'tabPage_800_close')
+    cerrarResourseManager.click()
+    time.sleep(2)
+# +++++ Fin funcion reporte 112 +++++
+
+# +++++ 4. Funcion Reporte 1261 +++++
+def reporte1261(xpathBPO, xpathActivity, xpatkCampana):
+    #Menu principal
+    systemMenu = driver.find_element(By.ID, 'systemMenu')
+    systemMenu.click()
+    time.sleep(1)
+    #selecciona Resource manager del menu principal
+    resourceManager = driver.find_element(By.ID, 's_800')
+    resourceManager.click()
+    time.sleep(5)
+    #Dentro del Resource Manager
+    driver.switch_to.frame('tabPage_800_iframe')
+    driver.switch_to.frame('container')
+    lupa = driver.find_element(By.ID,'searchResource')
+    lupa.click()
+    time.sleep(1)
+    driver.switch_to.default_content()
+    driver.switch_to.default_content()
+
+    codigoCampana = 1261
+    driver.switch_to.frame('searchResource_iframe')
+    textBox = driver.find_element(By.ID,'searchCondtion_input_value')
+    textBox.send_keys(codigoCampana)
+    time.sleep(1)
+
+    searchBtn = driver.find_element(By.ID, 'searchBtn')
+    searchBtn.click()
+    time.sleep(3)
+
+    reporte = driver.find_element(By.CLASS_NAME, 'grid_link1')
+    reporte.click()
+    driver.switch_to.default_content()
+    time.sleep(5)
+
+    # *** MOV 1 ***
+    # === Fecha D - 1 ===
+    driver.switch_to.frame('view8adf609b6f1e1f27016f21e66fd10255_iframe')
+
+    fechaActual = datetime.now().date()
+    diaAnterior = fechaActual - timedelta(days=1)
+    # Formato mes/dia/anio
+    fechaD_1 = diaAnterior.strftime(r'%m/%d/%Y')
+
+    textBoxFecha = driver.find_element(By.ID, 'rpt_param_Value0')
+    textBoxFecha.clear()
+    textBoxFecha.send_keys(fechaD_1)
+    time.sleep(1)
+
+    # === BPO ===
+    btnBPO = driver.find_element(By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
+    btnBPO.click()
+    time.sleep(2)
+
+    #Selecciona BPO
+    checkBoxBPO = driver.find_element(By.XPATH, xpathBPO)
+    checkBoxBPO.click()
+    time.sleep(2)
+
+    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk.click()
+    time.sleep(2)
+
+    # === Activity ===
+    btnActivity = driver.find_element(By.XPATH, '//*[@id="ActivityViewControl"]/table/tbody/tr/td[5]/input')
+    btnActivity.click()
+    time.sleep(2)
+
+    texto = 'OUTBPOPERETEN'
+    textBox = driver.find_element(By.NAME, 'startwith')
+    textBox.send_keys(texto)
+    time.sleep(2)
+
+    botonSearch = driver.find_element(By.NAME, 'search')
+    botonSearch.click()
+    time.sleep(2)
+
+    #Selecciona Activity
+    checkBoxCampana = driver.find_element(By.XPATH, xpathActivity)
+    checkBoxCampana.click()
+    time.sleep(5)
+
+    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk.click()
+    time.sleep(2)
+
+    # === Campaign ===
+    btnCampaign = driver.find_element(By.XPATH, '//*[@id="CampaignViewControl"]/table/tbody/tr/td[5]/input')
+    btnCampaign.click()
+    time.sleep(2)
+
+    texto = 'OUTBPOPERETEN'
+    textBox = driver.find_element(By.NAME, 'startwith')
+    textBox.send_keys(texto)
+    time.sleep(2)
+
+    botonSearch = driver.find_element(By.NAME, 'search')
+    botonSearch.click()
+    time.sleep(2)
+
+    #Selecciona Campaign
+    checkBoxCampana = driver.find_element(By.XPATH, xpatkCampana)
+    checkBoxCampana.click()
+    time.sleep(2)
+
+    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk.click()
+    time.sleep(2)
+
+    BotonOk2 = driver.find_element(By.ID, 'rpt_param_OkBtn')
+    BotonOk2.click()
+    time.sleep(10)
+
+    #Descarga
+    btnDowloand = driver.find_element(By.CLASS_NAME, 'ico_download')
+    btnDowloand.click()
+    time.sleep(1)
+
+    descargarExcel = driver.find_element(By.ID, 'downFullExcelMenuItemLiId')
+    descargarExcel.click()
+    time.sleep(1)
+
+    excel2013 = driver.find_element(By.ID, 'downExcel2007Id')
+    excel2013.click()
+    time.sleep(1)
+
+    confirmacionFinal = driver.find_element(By.ID, 'btnOk_downExcel2003Or2007WinId')
+    confirmacionFinal.click()
+    time.sleep(15)
+    driver.switch_to.default_content()
+
+    cerrarInputParametros = driver.find_element(By.ID, 'view8adf609b6f1e1f27016f21e66fd10255_close')
+    cerrarInputParametros.click()
+    time.sleep(2)
+
+    cerrarSearchResourse = driver.find_element(By.ID, 'searchResource_close')
+    cerrarSearchResourse.click()
+    time.sleep(2)
+
+    cerrarResourseManager = driver.find_element(By.ID, 'tabPage_800_close')
+    cerrarResourseManager.click()
+    time.sleep(2)
+# +++++ Fin Reporte 1261 +++++
+
 
 #Descarga de reportes
 # === Reportes 1259 ===
@@ -480,11 +716,80 @@ nombre = 'contactado401'
 destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\contactado\bicp\401'
 renombrarReubicar(nombre, destino)
 
+# === Fin Reportes 401 ===
 
-# === Fin Reporte 401 ===
+# === Reportes 112 ===
+#Blindaje
+labelC = f'OUTBPOPERETENSF'
+xpathBPO = f'//input[@type="checkbox" and @label="{labelC}"]'
+reporte112(xpathBPO)
+nombre = 'Blindaje112'
+destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\bicp\112'
+renombrarReubicar(nombre, destino)
 
+#Contactado
+labelC = f'OUTBPOPEPREVENPOSTREDSF'
+xpathBPO = f'//input[@type="checkbox" and @label="{labelC}"]'
+reporte112(xpathBPO)
+nombre = 'contactado112'
+destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\contactado\bicp\112'
+renombrarReubicar(nombre, destino)
 
+#Retenciones Inbound
+labelC = f'BPOPERURETENCION'
+xpathBPO = f'//input[@type="checkbox" and @label="{labelC}"]'
+reporte112(xpathBPO)
+nombre = 'retencionesInbound112'
+destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\retencionesInbound\bicp\112'
+renombrarReubicar(nombre, destino)
 
+# === Fin Reportes 112 ===
+
+# === Descarga Reportes 1261 ===
+#1. Blindaje
+    #    ---- OUTBPOPERETENMOVSF01 ----
+labelBPO = 'OUTBPOPERETENSF'
+xpathBPO = f'//input[@type="radio" and @label="{labelBPO}"]'
+
+labelAct = 'OUTBPOPERETENMOVSF01'
+xpathActivity = f'//input[@type="radio" and @label="{labelAct}"]'
+
+labelC = labelAct
+xpatkCampana = f'//input[@type="radio" and @label="{labelC}"]'
+reporte1261(xpathBPO, xpathActivity, xpatkCampana)
+nombre = 'blindajeMov01_1261'
+destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\BICP\1261'
+renombrarReubicar(nombre, destino)
+
+    #    ---- OUTBPOPERETENMOVSF02 ----
+labelBPO = 'OUTBPOPERETENSF'
+xpathBPO = f'//input[@type="radio" and @label="{labelBPO}"]'
+
+labelAct = 'OUTBPOPERETENMOVSF02'
+xpathActivity = f'//input[@type="radio" and @label="{labelAct}"]'
+
+labelC = labelAct
+xpatkCampana = f'//input[@type="radio" and @label="{labelC}"]'
+reporte1261(xpathBPO, xpathActivity, xpatkCampana)
+nombre = 'blindajeMov02_1261'
+destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\BICP\1261'
+renombrarReubicar(nombre, destino)
+
+    #    ---- OUTBPOPERETENBITSF03 ----
+labelBPO = 'OUTBPOPERETENSF'
+xpathBPO = f'//input[@type="radio" and @label="{labelBPO}"]'
+
+labelAct = 'OUTBPOPERETENBITSF03'
+xpathActivity = f'//input[@type="radio" and @label="{labelAct}"]'
+
+labelC = labelAct
+xpatkCampana = f'//input[@type="radio" and @label="{labelC}"]'
+reporte1261(xpathBPO, xpathActivity, xpatkCampana)
+nombre = 'blindajeBit03_1261'
+destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\BICP\1261'
+renombrarReubicar(nombre, destino)
+
+# === Fin Reportes 1261 ===
 
 
 #Cierra la aplicacion

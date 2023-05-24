@@ -15,6 +15,7 @@ import os
 import glob
 import shutil
 from datetime import datetime, timedelta
+import random
 
 #Funcion que reubicará las descargas en sus respectivas carpetas
 def renombrarReubicar(nuevoNombre, carpetaDestino):
@@ -35,6 +36,13 @@ def renombrarReubicar(nuevoNombre, carpetaDestino):
         ruta_destino = os.path.join(carpeta_destino, nuevo_nombre)
         # Mover el archivo a la carpeta de destino con el nuevo nombre
         shutil.move(ultimo_archivo, ruta_destino)
+
+#Funcion que crea el nombre del reporte
+def nombreReporte(name):
+    fechaHora = datetime.now()
+    fecha = fechaHora.strftime("%Y%m%d_%H%M%S")
+    aleatorio = str(random.randint(100, 999))
+    print(name + fecha + '_' + aleatorio)
 
 # Especifica la ruta del controlador de Chrome
 pathDriver = "113/chromedriver.exe"
@@ -649,21 +657,24 @@ def reporte1261(xpathBPO, xpathActivity, xpatkCampana):
 #Blindaje
 labelC = f'OUTBPOPERETENSF'
 reporte1259(f'//input[@type="checkbox" and @label="{labelC}"]')
-nombre = 'Blindaje1259'
+nombreAsignado = 'blindaje_bicp_1259_'
+nombre = nombreReporte(nombreAsignado)
 destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\bicp\1259'
 renombrarReubicar(nombre, destino)
 
 #Recupero Inbound
 labelC = f'BPOPERETENCIONOUT'
 reporte1259(f'//input[@type="checkbox" and @label="{labelC}"]')
-nombre = 'RecuperoInbound1259'
+nombreAsignado = 'RecuperoInbound_bicp_1259_'
+nombre = nombreReporte(nombreAsignado)
 destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\recuperoInbound\bicp\1259'
 renombrarReubicar(nombre, destino)
 
 #Contactados
 labelC = f'OUTBPOPEPREVENPOSTREDSF'
 reporte1259(f'//input[@type="checkbox" and @label="{labelC}"]')
-nombre = 'Contactado1259'
+nombreAsignado = 'contactado_bicp_1259_'
+nombre = nombreReporte(nombreAsignado)
 destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\contactado\bicp\1259'
 renombrarReubicar(nombre, destino)
 
@@ -686,7 +697,8 @@ labelAG = '1034^OUTBPOPERETENSF'
 xpathAgentWorkgroup = f'//input[@type="checkbox" and @label="{labelAG}"]'
 
 reporte401(xpathBPO, txtCampana, xpathCampana, xpathAgentWorkgroup)
-nombre = 'Blindaje401'
+nombreAsignado = 'blindaje_bicp_401_'
+nombre = nombreReporte(nombreAsignado)
 destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\bicp\401'
 renombrarReubicar(nombre, destino)
 
@@ -699,7 +711,8 @@ valueC = 'selectAll'
 xpathCampana = f'//input[@type="checkbox" and @value="{valueC}"]'
 
 reporte401(xpathBPO, txtCampana, xpathCampana)
-nombre = 'RecuperoInbound401'
+nombreAsignado = 'RecuperoInbound_bicp_401_'
+nombre = nombreReporte(nombreAsignado)
 destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\recuperoInbound\bicp\401'
 renombrarReubicar(nombre, destino)
 
@@ -712,7 +725,8 @@ valueC = 'selectAll'
 xpathCampana = f'//input[@type="checkbox" and @value="{valueC}"]'
 
 reporte401(xpathBPO, txtCampana, xpathCampana)
-nombre = 'contactado401'
+nombreAsignado = 'contactado_bicp_401_'
+nombre = nombreReporte(nombreAsignado)
 destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\contactado\bicp\401'
 renombrarReubicar(nombre, destino)
 
@@ -723,7 +737,8 @@ renombrarReubicar(nombre, destino)
 labelC = f'OUTBPOPERETENSF'
 xpathBPO = f'//input[@type="checkbox" and @label="{labelC}"]'
 reporte112(xpathBPO)
-nombre = 'Blindaje112'
+nombreAsignado = 'blindaje_bicp_112_'
+nombre = nombreReporte(nombreAsignado)
 destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\bicp\112'
 renombrarReubicar(nombre, destino)
 
@@ -731,7 +746,8 @@ renombrarReubicar(nombre, destino)
 labelC = f'OUTBPOPEPREVENPOSTREDSF'
 xpathBPO = f'//input[@type="checkbox" and @label="{labelC}"]'
 reporte112(xpathBPO)
-nombre = 'contactado112'
+nombreAsignado = 'contactado_bicp_112_'
+nombre = nombreReporte(nombreAsignado)
 destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\contactado\bicp\112'
 renombrarReubicar(nombre, destino)
 
@@ -739,7 +755,8 @@ renombrarReubicar(nombre, destino)
 labelC = f'BPOPERURETENCION'
 xpathBPO = f'//input[@type="checkbox" and @label="{labelC}"]'
 reporte112(xpathBPO)
-nombre = 'retencionesInbound112'
+nombreAsignado = 'RetencionesInbound_bicp_112_'
+nombre = nombreReporte(nombreAsignado)
 destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\retencionesInbound\bicp\112'
 renombrarReubicar(nombre, destino)
 
@@ -757,7 +774,8 @@ xpathActivity = f'//input[@type="radio" and @label="{labelAct}"]'
 labelC = labelAct
 xpatkCampana = f'//input[@type="radio" and @label="{labelC}"]'
 reporte1261(xpathBPO, xpathActivity, xpatkCampana)
-nombre = 'blindajeMov01_1261'
+nombreAsignado = 'blindajeMov01_bicp_1261_'
+nombre = nombreReporte(nombreAsignado)
 destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\BICP\1261'
 renombrarReubicar(nombre, destino)
 
@@ -771,7 +789,8 @@ xpathActivity = f'//input[@type="radio" and @label="{labelAct}"]'
 labelC = labelAct
 xpatkCampana = f'//input[@type="radio" and @label="{labelC}"]'
 reporte1261(xpathBPO, xpathActivity, xpatkCampana)
-nombre = 'blindajeMov02_1261'
+nombreAsignado = 'blindajeMov02_bicp_1261_'
+nombre = nombreReporte(nombreAsignado)
 destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\BICP\1261'
 renombrarReubicar(nombre, destino)
 
@@ -785,7 +804,8 @@ xpathActivity = f'//input[@type="radio" and @label="{labelAct}"]'
 labelC = labelAct
 xpatkCampana = f'//input[@type="radio" and @label="{labelC}"]'
 reporte1261(xpathBPO, xpathActivity, xpatkCampana)
-nombre = 'blindajeBit03_1261'
+nombreAsignado = 'blindajeBit03_bicp_1261_'
+nombre = nombreReporte(nombreAsignado)
 destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\BICP\1261'
 renombrarReubicar(nombre, destino)
 

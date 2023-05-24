@@ -148,83 +148,116 @@ while hayCookie:
 else:
     pass
 
+# +++++ Funcion para descargar Reporte 112 +++++
+def reporte112(xpathBPO):
+    #Menu principal
+    systemMenu = driver.find_element(By.ID, 'systemMenu')
+    systemMenu.click()
 
-#Menu principal
-systemMenu = driver.find_element(By.ID, 'systemMenu')
-systemMenu.click()
+    time.sleep(1)
+    #selecciona Resource manager del menu principal
+    resourceManager = driver.find_element(By.ID, 's_800')
+    resourceManager.click()
+    time.sleep(5)
 
-time.sleep(1)
-#selecciona Resource manager del menu principal
-resourceManager = driver.find_element(By.ID, 's_800')
-resourceManager.click()
-time.sleep(5)
+    driver.switch_to.frame('tabPage_800_iframe')
+    driver.switch_to.frame('container')
+    lupa = driver.find_element(By.ID,'searchResource')
+    lupa.click()
+    time.sleep(1)
+    driver.switch_to.default_content()
+    driver.switch_to.default_content()
 
-driver.switch_to.frame('tabPage_800_iframe')
-driver.switch_to.frame('container')
-lupa = driver.find_element(By.ID,'searchResource')
-lupa.click()
-time.sleep(1)
-driver.switch_to.default_content()
-driver.switch_to.default_content()
+    codigoCampana = 112
+    driver.switch_to.frame('searchResource_iframe')
+    textBox = driver.find_element(By.ID,'searchCondtion_input_value')
+    textBox.send_keys(codigoCampana)
+    time.sleep(1)
 
-codigoCampana = 112
-driver.switch_to.frame('searchResource_iframe')
-textBox = driver.find_element(By.ID,'searchCondtion_input_value')
-textBox.send_keys(codigoCampana)
-time.sleep(1)
+    searchBtn = driver.find_element(By.ID, 'searchBtn')
+    searchBtn.click()
+    time.sleep(3)
 
-searchBtn = driver.find_element(By.ID, 'searchBtn')
-searchBtn.click()
-time.sleep(3)
+    reporte = driver.find_element(By.CLASS_NAME, 'grid_link1')
+    reporte.click()
+    driver.switch_to.default_content()
+    time.sleep(5)
 
-reporte = driver.find_element(By.CLASS_NAME, 'grid_link1')
-reporte.click()
-driver.switch_to.default_content()
-time.sleep(5)
+    # === BPO ===
+    #Seleccionar campaña
+    driver.switch_to.frame('view8adf609c54f300b50154f46383e501a8_iframe')
+    btnCampana = driver.find_element(By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
+    btnCampana.click()
+    time.sleep(2)
 
-#Seleccionar campaña
-driver.switch_to.frame('view8adf609c54f300b50154f46383e501a8_iframe')
-btnCampana = driver.find_element(By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
-btnCampana.click()
-time.sleep(2)
+    #desmarca toda la selecion por Default SelectAll
+    checkBoxselectAll = driver.find_element(By.CSS_SELECTOR, 'input[type="checkbox"][value="selectAll"]')
+    checkBoxselectAll.click()
+    checkBoxselectAll.click()
+    time.sleep(1)
 
-# === BPO ===
-#desmarca toda la selecion por Default SelectAll
-checkBoxselectAll = driver.find_element(By.CSS_SELECTOR, 'input[type="checkbox"][value="selectAll"]')
-checkBoxselectAll.click()
-checkBoxselectAll.click()
-time.sleep(1)
+    #Selecciona BPO
+    checkBoxBPO = driver.find_element(By.XPATH, xpathBPO)
+    checkBoxBPO.click()
+    time.sleep(1)
 
-#Selecciona BPO
-checkBoxBPO = driver.find_element(By.XPATH, '//div[contains(@id, "paramValueOptionsDiv")]/div[6]/input')
-checkBoxBPO.click()
-time.sleep(1)
+    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk.click()
+    time.sleep(1)
 
-BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
-BotonOk.click()
-time.sleep(1)
+    BotonOk2 = driver.find_element(By.ID, 'rpt_param_OkBtn')
+    BotonOk2.click()
+    time.sleep(10)
 
-BotonOk2 = driver.find_element(By.ID, 'rpt_param_OkBtn')
-BotonOk2.click()
-time.sleep(10)
+    #Descarga
+    btnDowloand = driver.find_element(By.CLASS_NAME, 'ico_download')
+    btnDowloand.click()
+    time.sleep(1)
 
-#Descarga
-btnDowloand = driver.find_element(By.CLASS_NAME, 'ico_download')
-btnDowloand.click()
-time.sleep(1)
+    descargarExcel = driver.find_element(By.ID, 'downFullExcelMenuItemLiId')
+    descargarExcel.click()
+    time.sleep(1)
 
-descargarExcel = driver.find_element(By.ID, 'downFullExcelMenuItemLiId')
-descargarExcel.click()
-time.sleep(1)
+    excel2013 = driver.find_element(By.ID, 'downExcel2007Id')
+    excel2013.click()
+    time.sleep(1)
 
-excel2013 = driver.find_element(By.ID, 'downExcel2007Id')
-excel2013.click()
-time.sleep(1)
+    confirmacionFinal = driver.find_element(By.ID, 'btnOk_downExcel2003Or2007WinId')
+    confirmacionFinal.click()
+    time.sleep(15)
+    driver.switch_to.default_content()
 
-confirmacionFinal = driver.find_element(By.ID, 'btnOk_downExcel2003Or2007WinId')
-confirmacionFinal.click()
-time.sleep(15)
-driver.switch_to.default_content()
+    cerrarInputParametros = driver.find_element(By.ID, 'view8adf609b6f1e1f27016f21e66d51024c_close')
+    cerrarInputParametros.click()
+    time.sleep(2)
+
+    cerrarSearchResourse = driver.find_element(By.ID, 'searchResource_close')
+    cerrarSearchResourse.click()
+    time.sleep(2)
+
+    cerrarResourseManager = driver.find_element(By.ID, 'tabPage_800_close')
+    cerrarResourseManager.click()
+    time.sleep(2)
+# +++++ Fin funcion reporte 112 +++++
+
+#Reportes 112
+#Blindaje
+labelC = f'OUTBPOPERETENSF'
+xpathBPO = f'//input[@type="checkbox" and @label="{labelC}"]'
+reporte112(xpathBPO)
+
+#Contactado
+labelC = f'OUTBPOPEPREVENPOSTREDSF'
+xpathBPO = f'//input[@type="checkbox" and @label="{labelC}"]'
+reporte112(xpathBPO)
+
+#Retenciones Inbound
+labelC = f'BPOPERURETENCION'
+xpathBPO = f'//input[@type="checkbox" and @label="{labelC}"]'
+reporte112(xpathBPO)
+
+
+
 
 #Cierra la aplicacion
 fun_logout = driver.find_element(By.ID, 'fun_logout')

@@ -13,6 +13,7 @@ from PIL import Image
 from io import BytesIO
 import pyautogui
 from datetime import datetime, timedelta
+import random
 
 # Especifica la ruta del controlador de Chrome
 pathDriver = "113/chromedriver.exe"
@@ -291,6 +292,7 @@ def reporte1261(xpathBPO, xpathActivity, xpatkCampana):
     cerrarResourseManager = driver.find_element(By.ID, 'tabPage_800_close')
     cerrarResourseManager.click()
     time.sleep(2)
+# +++++ Fin Reporte 1261 +++++
 
 # === Reporte 1261 ===
 #Blindaje

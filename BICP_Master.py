@@ -17,9 +17,14 @@ import shutil
 from datetime import datetime, timedelta
 import random
 
-#Funcion que reubicará las descargas en sus respectivas carpetas
+directoryPath = os.getcwd()
+
+# Funcion que reubicará las descargas en sus respectivas carpetas
+
+
 def renombrarReubicar(nuevoNombre, carpetaDestino):
-    ruta_descargas = r"C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\descargaRobotin"
+    #ruta_descargas = r"C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\descargaRobotin"
+    ruta_descargas = directoryPath + r'/temp'
     archivos_descargados = sorted(
         glob.glob(os.path.join(ruta_descargas, '*')), key=os.path.getmtime, reverse=True
     )
@@ -28,7 +33,7 @@ def renombrarReubicar(nuevoNombre, carpetaDestino):
         ultimo_archivo = archivos_descargados[0]
         # Cambiar el nombre del archivo --1er argumento de la funcion
         nuevo_nombre = f'{nuevoNombre}.xlsx'
-        carpeta_destino = carpetaDestino  
+        carpeta_destino = carpetaDestino
         # Comprobar si la carpeta de destino existe, si no, crearla
         if not os.path.exists(carpeta_destino):
             os.makedirs(carpeta_destino)
@@ -37,26 +42,32 @@ def renombrarReubicar(nuevoNombre, carpetaDestino):
         # Mover el archivo a la carpeta de destino con el nuevo nombre
         shutil.move(ultimo_archivo, ruta_destino)
 
-#Funcion que crea el nombre del reporte
+# Funcion que crea el nombre del reporte
+
+
 def nombreReporte(name):
     fechaHora = datetime.now()
     fecha = fechaHora.strftime("%Y%m%d_%H%M%S")
     aleatorio = str(random.randint(100, 999))
+    #nameFile = name + fecha + '_' + aleatorio
     print(name + fecha + '_' + aleatorio)
+    
+
 
 # Especifica la ruta del controlador de Chrome
 pathDriver = "113/chromedriver.exe"
 
-#Especifica Directorio de descarga
+# Especifica Directorio de descarga
 options = webdriver.ChromeOptions()
 options.add_experimental_option("prefs", {
-    "download.default_directory": r"C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\descargaRobotin",
+    #"download.default_directory": r"C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\descargaRobotin",
+    "download.default_directory": directoryPath + r'/temp',
     "download.prompt_for_download": False,
     "download.directory_upgrade": True,
     "safebrowsing.enabled": True
 })
 
-#Para Ignorar los errores de certificado SSL (La conexion no es privada)
+# Para Ignorar los errores de certificado SSL (La conexion no es privada)
 options.add_argument("--ignore-certificate-errors")
 
 # Especifica los detalles de la URL, nombre de usuario y contraseña
@@ -70,15 +81,17 @@ driver = webdriver.Chrome(executable_path=pathDriver, options=options)
 driver.get(url)
 time.sleep(1)
 
-#cierra ventana emergente
+# cierra ventana emergente
 elemento_cierre = driver.find_element(By.XPATH, '//*[@id="tipClose"]')
 elemento_cierre.click()
 time.sleep(1)
 
-#funcion para obtener el captcha
+# funcion para obtener el captcha
+
+
 def obtenerCaptcha():
     # Busca el elemento deseado utilizando un selector CSS
-    element = driver.find_element(By.ID,'validateimg')
+    element = driver.find_element(By.ID, 'validateimg')
     # Captura una imagen del elemento
     element.screenshot('capture.png')
 
@@ -92,7 +105,9 @@ def obtenerCaptcha():
 
     return code
 
-#funcion para inicio de sesion
+# funcion para inicio de sesion
+
+
 def inicioSesion(usuario, contrasena):
     # Busca los campos de usuario y contraseña y los llena con los valores especificados
     campoInputUser = driver.find_element(By.ID, 'username2')
@@ -115,8 +130,9 @@ def inicioSesion(usuario, contrasena):
     validacion_logueo = True
     while validacion_logueo:
         code = obtenerCaptcha()
-        while code == 'error' :
-            refrescarCaptcha = driver.find_element(By.CLASS_NAME, 'validate_btn')
+        while code == 'error':
+            refrescarCaptcha = driver.find_element(
+                By.CLASS_NAME, 'validate_btn')
             refrescarCaptcha.click()
             code = obtenerCaptcha()
         else:
@@ -125,7 +141,7 @@ def inicioSesion(usuario, contrasena):
         code_field.send_keys(code)
         time.sleep(1)
 
-        #presiona boton submit 
+        # presiona boton submit
         submit_button = driver.find_element(By.CLASS_NAME, 'login_submit_btn')
         submit_button.click()
         time.sleep(5)
@@ -137,11 +153,13 @@ def inicioSesion(usuario, contrasena):
         else:
             validacion_logueo = False
 
-#funcion para validar Sesion activa
+# funcion para validar Sesion activa
+
+
 def validaSesionActiva():
-#Si la sesion esta activa
+    # Si la sesion esta activa
     try:
-        continuar = driver.find_element(By.ID,'usm_continue')
+        continuar = driver.find_element(By.ID, 'usm_continue')
         sesionAbierta = True
     except NoSuchElementException:
         sesionAbierta = False
@@ -151,7 +169,9 @@ def validaSesionActiva():
     else:
         pass
 
-#funcion para validar cookies
+# funcion para validar cookies
+
+
 def validaSiExisteCookie():
     # para las cookies
     try:
@@ -160,6 +180,7 @@ def validaSiExisteCookie():
     except NoSuchElementException:
         existeCookie = False
     return existeCookie
+
 
 inicioSesion(username, password)
 validaSesionActiva()
@@ -181,31 +202,33 @@ else:
     pass
 
 # +++++ 1. Funcion para descargar Reporte 1259 +++++
+
+
 def reporte1259(xpathCamapana):
-    #Menu principal
+    # Menu principal
     systemMenu = driver.find_element(By.ID, 'systemMenu')
     systemMenu.click()
     time.sleep(1)
 
-    #selecciona Resource manager del menu principal
+    # selecciona Resource manager del menu principal
     resourceManager = driver.find_element(By.ID, 's_800')
     resourceManager.click()
     time.sleep(5)
 
-    #Dentro de la seccion de Resource Manager
+    # Dentro de la seccion de Resource Manager
     driver.switch_to.frame('tabPage_800_iframe')
     driver.switch_to.frame('container')
-    lupa = driver.find_element(By.ID,'searchResource')
+    lupa = driver.find_element(By.ID, 'searchResource')
     lupa.click()
     time.sleep(1)
     driver.switch_to.default_content()
     driver.switch_to.default_content()
 
-    #Dentro de la seccion Search Resource
-    #Completa el TextBox con el codigo de la campaña
+    # Dentro de la seccion Search Resource
+    # Completa el TextBox con el codigo de la campaña
     codigoCampana = 1259
     driver.switch_to.frame('searchResource_iframe')
-    textBox = driver.find_element(By.ID,'searchCondtion_input_value')
+    textBox = driver.find_element(By.ID, 'searchCondtion_input_value')
     textBox.clear()
     textBox.send_keys(codigoCampana)
     time.sleep(1)
@@ -219,23 +242,26 @@ def reporte1259(xpathCamapana):
     driver.switch_to.default_content()
     time.sleep(5)
 
-    #Seccion de Input de parámetros
+    # Seccion de Input de parámetros
     driver.switch_to.frame('view8adf609b6f1e1f27016f21e66d51024c_iframe')
     # === BPO ===
-    btnBPO = driver.find_element(By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
+    btnBPO = driver.find_element(
+        By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
     btnBPO.click()
     time.sleep(2)
 
-    #Desmarca la seleccion por default
-    checkBoxDefault = driver.find_element(By.CSS_SELECTOR, 'input[type="checkbox"][value="9999"]')
+    # Desmarca la seleccion por default
+    checkBoxDefault = driver.find_element(
+        By.CSS_SELECTOR, 'input[type="checkbox"][value="9999"]')
     checkBoxDefault.click()
     time.sleep(1)
-    #Marca el checbox de la campaña desseada -- 1er argumento funcion
+    # Marca el checbox de la campaña desseada -- 1er argumento funcion
     checkBoxCampana = driver.find_element(By.XPATH, xpathCamapana)
     checkBoxCampana.click()
     time.sleep(1)
 
-    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk = driver.find_element(
+        By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
     BotonOk.click()
     time.sleep(1)
 
@@ -243,7 +269,7 @@ def reporte1259(xpathCamapana):
     BotonOk2.click()
     time.sleep(15)
 
-    #Descarga
+    # Descarga
     btnDowloand = driver.find_element(By.CLASS_NAME, 'ico_download')
     btnDowloand.click()
     time.sleep(1)
@@ -256,12 +282,14 @@ def reporte1259(xpathCamapana):
     excel2013.click()
     time.sleep(1)
 
-    confirmacionFinal = driver.find_element(By.ID, 'btnOk_downExcel2003Or2007WinId')
+    confirmacionFinal = driver.find_element(
+        By.ID, 'btnOk_downExcel2003Or2007WinId')
     confirmacionFinal.click()
     time.sleep(15)
     driver.switch_to.default_content()
 
-    cerrarInputParametros = driver.find_element(By.ID, 'view8adf609b6f1e1f27016f21e66d51024c_close')
+    cerrarInputParametros = driver.find_element(
+        By.ID, 'view8adf609b6f1e1f27016f21e66d51024c_close')
     cerrarInputParametros.click()
     time.sleep(2)
 
@@ -275,31 +303,33 @@ def reporte1259(xpathCamapana):
 # +++++ Fin Funcion Reporte 1259 +++++
 
 # +++++ 2. Funcion para descargar Reporte 401 +++++
-def reporte401(xpathBPO, txtCampana, xpathCampana, xpathAgentWorkgroup = 'noDefinido'):
-    #Menu Principal
+
+
+def reporte401(xpathBPO, txtCampana, xpathCampana, xpathAgentWorkgroup='noDefinido'):
+    # Menu Principal
     systemMenu = driver.find_element(By.ID, 'systemMenu')
     systemMenu.click()
     time.sleep(1)
 
-    #selecciona Resource manager del menu principal
+    # selecciona Resource manager del menu principal
     resourceManager = driver.find_element(By.ID, 's_800')
     resourceManager.click()
     time.sleep(5)
 
-    #Dentro del Resource Manager
+    # Dentro del Resource Manager
     driver.switch_to.frame('tabPage_800_iframe')
     driver.switch_to.frame('container')
-    lupa = driver.find_element(By.ID,'searchResource')
+    lupa = driver.find_element(By.ID, 'searchResource')
     lupa.click()
     time.sleep(1)
     driver.switch_to.default_content()
     driver.switch_to.default_content()
 
-    #Dentro de la seccion Search Resource
-    #Completa el TextBox con el codigo de la campaña
+    # Dentro de la seccion Search Resource
+    # Completa el TextBox con el codigo de la campaña
     codigoCampana = 401
     driver.switch_to.frame('searchResource_iframe')
-    textBox = driver.find_element(By.ID,'searchCondtion_input_value')
+    textBox = driver.find_element(By.ID, 'searchCondtion_input_value')
     textBox.send_keys(codigoCampana)
     time.sleep(1)
 
@@ -312,39 +342,44 @@ def reporte401(xpathBPO, txtCampana, xpathCampana, xpathAgentWorkgroup = 'noDefi
     driver.switch_to.default_content()
     time.sleep(5)
 
-    #Seccion de Input de parámetros
+    # Seccion de Input de parámetros
     driver.switch_to.frame('view8adf609c6387afda01638b7f47b90570_iframe')
 
-    ## === BPO ===
-    btnBPO = driver.find_element(By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
+    # === BPO ===
+    btnBPO = driver.find_element(
+        By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
     btnBPO.click()
     time.sleep(2)
 
-    #desmarca selecion Default All
-    checkBoxDefault = driver.find_element(By.CSS_SELECTOR, 'input[type="checkbox"][value="9999"]')
+    # desmarca selecion Default All
+    checkBoxDefault = driver.find_element(
+        By.CSS_SELECTOR, 'input[type="checkbox"][value="9999"]')
     checkBoxDefault.click()
     time.sleep(1)
 
-    #Selecciona BPO
+    # Selecciona BPO
     checkBoxCampana = driver.find_element(By.XPATH, xpathBPO)
     checkBoxCampana.click()
     time.sleep(1)
 
-    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk = driver.find_element(
+        By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
     BotonOk.click()
     time.sleep(1)
 
-    ## === Campaign ===
-    btnCampana = driver.find_element(By.XPATH, '//*[@id="CampaignViewControl"]/table/tbody/tr/td[5]/input')
+    # === Campaign ===
+    btnCampana = driver.find_element(
+        By.XPATH, '//*[@id="CampaignViewControl"]/table/tbody/tr/td[5]/input')
     btnCampana.click()
     time.sleep(2)
 
-    #desmarca selecion Default All
-    checkBoxDefault = driver.find_element(By.CSS_SELECTOR, 'input[type="checkbox"][value="9999"]')
+    # desmarca selecion Default All
+    checkBoxDefault = driver.find_element(
+        By.CSS_SELECTOR, 'input[type="checkbox"][value="9999"]')
     checkBoxDefault.click()
     time.sleep(1)
 
-    #ingresar texto busqueda en textbox
+    # ingresar texto busqueda en textbox
     texto = txtCampana
     textBox = driver.find_element(By.NAME, 'startwith')
     textBox.send_keys(texto)
@@ -354,19 +389,21 @@ def reporte401(xpathBPO, txtCampana, xpathCampana, xpathAgentWorkgroup = 'noDefi
     botonSearch.click()
     time.sleep(2)
 
-    #Selecciona Campaign
+    # Selecciona Campaign
     checkBoxCampana = driver.find_element(By.XPATH, xpathCampana)
     checkBoxCampana.click()
     time.sleep(1)
 
-    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk = driver.find_element(
+        By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
     BotonOk.click()
     time.sleep(1)
 
     # === Agent Workgroup ===
     agentWkg = xpathAgentWorkgroup
     if agentWkg != 'noDefinido':
-        btnAgentWorkgroup = driver.find_element(By.XPATH, '//*[@id="Agent WorkgroupViewControl"]/table/tbody/tr/td[5]/input')
+        btnAgentWorkgroup = driver.find_element(
+            By.XPATH, '//*[@id="Agent WorkgroupViewControl"]/table/tbody/tr/td[5]/input')
         btnAgentWorkgroup.click()
         time.sleep(2)
 
@@ -374,7 +411,8 @@ def reporte401(xpathBPO, txtCampana, xpathCampana, xpathAgentWorkgroup = 'noDefi
         checkBox1034.click()
         time.sleep(1)
 
-        BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+        BotonOk = driver.find_element(
+            By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
         BotonOk.click()
         time.sleep(1)
     else:
@@ -384,7 +422,7 @@ def reporte401(xpathBPO, txtCampana, xpathCampana, xpathAgentWorkgroup = 'noDefi
     BotonOk2.click()
     time.sleep(10)
 
-    #Descarga
+    # Descarga
     btnDowloand = driver.find_element(By.CLASS_NAME, 'ico_download')
     btnDowloand.click()
     time.sleep(1)
@@ -397,12 +435,14 @@ def reporte401(xpathBPO, txtCampana, xpathCampana, xpathAgentWorkgroup = 'noDefi
     excel2013.click()
     time.sleep(1)
 
-    confirmacionFinal = driver.find_element(By.ID, 'btnOk_downExcel2003Or2007WinId')
+    confirmacionFinal = driver.find_element(
+        By.ID, 'btnOk_downExcel2003Or2007WinId')
     confirmacionFinal.click()
     time.sleep(15)
     driver.switch_to.default_content()
 
-    cerrarInputParametros = driver.find_element(By.ID, 'view8adf609c6387afda01638b7f47b90570_close')
+    cerrarInputParametros = driver.find_element(
+        By.ID, 'view8adf609c6387afda01638b7f47b90570_close')
     cerrarInputParametros.click()
     time.sleep(2)
 
@@ -417,20 +457,22 @@ def reporte401(xpathBPO, txtCampana, xpathCampana, xpathAgentWorkgroup = 'noDefi
 # +++++ Fin Funcion Reporte 401 +++++
 
 # +++++ 3. Funcion para descargar Reporte 112 +++++
+
+
 def reporte112(xpathBPO):
-    #Menu principal
+    # Menu principal
     systemMenu = driver.find_element(By.ID, 'systemMenu')
     systemMenu.click()
 
     time.sleep(1)
-    #selecciona Resource manager del menu principal
+    # selecciona Resource manager del menu principal
     resourceManager = driver.find_element(By.ID, 's_800')
     resourceManager.click()
     time.sleep(5)
 
     driver.switch_to.frame('tabPage_800_iframe')
     driver.switch_to.frame('container')
-    lupa = driver.find_element(By.ID,'searchResource')
+    lupa = driver.find_element(By.ID, 'searchResource')
     lupa.click()
     time.sleep(1)
     driver.switch_to.default_content()
@@ -438,7 +480,7 @@ def reporte112(xpathBPO):
 
     codigoCampana = 112
     driver.switch_to.frame('searchResource_iframe')
-    textBox = driver.find_element(By.ID,'searchCondtion_input_value')
+    textBox = driver.find_element(By.ID, 'searchCondtion_input_value')
     textBox.send_keys(codigoCampana)
     time.sleep(1)
 
@@ -452,24 +494,27 @@ def reporte112(xpathBPO):
     time.sleep(5)
 
     # === BPO ===
-    #Seleccionar campaña
+    # Seleccionar campaña
     driver.switch_to.frame('view8adf609c54f300b50154f46383e501a8_iframe')
-    btnCampana = driver.find_element(By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
+    btnCampana = driver.find_element(
+        By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
     btnCampana.click()
     time.sleep(2)
 
-    #desmarca toda la selecion por Default SelectAll
-    checkBoxselectAll = driver.find_element(By.CSS_SELECTOR, 'input[type="checkbox"][value="selectAll"]')
+    # desmarca toda la selecion por Default SelectAll
+    checkBoxselectAll = driver.find_element(
+        By.CSS_SELECTOR, 'input[type="checkbox"][value="selectAll"]')
     checkBoxselectAll.click()
     checkBoxselectAll.click()
     time.sleep(1)
 
-    #Selecciona BPO
+    # Selecciona BPO
     checkBoxBPO = driver.find_element(By.XPATH, xpathBPO)
     checkBoxBPO.click()
     time.sleep(1)
 
-    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk = driver.find_element(
+        By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
     BotonOk.click()
     time.sleep(1)
 
@@ -477,7 +522,7 @@ def reporte112(xpathBPO):
     BotonOk2.click()
     time.sleep(10)
 
-    #Descarga
+    # Descarga
     btnDowloand = driver.find_element(By.CLASS_NAME, 'ico_download')
     btnDowloand.click()
     time.sleep(1)
@@ -490,12 +535,14 @@ def reporte112(xpathBPO):
     excel2013.click()
     time.sleep(1)
 
-    confirmacionFinal = driver.find_element(By.ID, 'btnOk_downExcel2003Or2007WinId')
+    confirmacionFinal = driver.find_element(
+        By.ID, 'btnOk_downExcel2003Or2007WinId')
     confirmacionFinal.click()
     time.sleep(15)
     driver.switch_to.default_content()
 
-    cerrarInputParametros = driver.find_element(By.ID, 'view8adf609c54f300b50154f46383e501a8_close')
+    cerrarInputParametros = driver.find_element(
+        By.ID, 'view8adf609c54f300b50154f46383e501a8_close')
     cerrarInputParametros.click()
     time.sleep(2)
 
@@ -509,19 +556,21 @@ def reporte112(xpathBPO):
 # +++++ Fin funcion reporte 112 +++++
 
 # +++++ 4. Funcion Reporte 1261 +++++
+
+
 def reporte1261(xpathBPO, xpathActivity, xpatkCampana):
-    #Menu principal
+    # Menu principal
     systemMenu = driver.find_element(By.ID, 'systemMenu')
     systemMenu.click()
     time.sleep(1)
-    #selecciona Resource manager del menu principal
+    # selecciona Resource manager del menu principal
     resourceManager = driver.find_element(By.ID, 's_800')
     resourceManager.click()
     time.sleep(5)
-    #Dentro del Resource Manager
+    # Dentro del Resource Manager
     driver.switch_to.frame('tabPage_800_iframe')
     driver.switch_to.frame('container')
-    lupa = driver.find_element(By.ID,'searchResource')
+    lupa = driver.find_element(By.ID, 'searchResource')
     lupa.click()
     time.sleep(1)
     driver.switch_to.default_content()
@@ -529,7 +578,7 @@ def reporte1261(xpathBPO, xpathActivity, xpatkCampana):
 
     codigoCampana = 1261
     driver.switch_to.frame('searchResource_iframe')
-    textBox = driver.find_element(By.ID,'searchCondtion_input_value')
+    textBox = driver.find_element(By.ID, 'searchCondtion_input_value')
     textBox.send_keys(codigoCampana)
     time.sleep(1)
 
@@ -557,21 +606,24 @@ def reporte1261(xpathBPO, xpathActivity, xpatkCampana):
     time.sleep(1)
 
     # === BPO ===
-    btnBPO = driver.find_element(By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
+    btnBPO = driver.find_element(
+        By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
     btnBPO.click()
     time.sleep(2)
 
-    #Selecciona BPO
+    # Selecciona BPO
     checkBoxBPO = driver.find_element(By.XPATH, xpathBPO)
     checkBoxBPO.click()
     time.sleep(2)
 
-    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk = driver.find_element(
+        By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
     BotonOk.click()
     time.sleep(2)
 
     # === Activity ===
-    btnActivity = driver.find_element(By.XPATH, '//*[@id="ActivityViewControl"]/table/tbody/tr/td[5]/input')
+    btnActivity = driver.find_element(
+        By.XPATH, '//*[@id="ActivityViewControl"]/table/tbody/tr/td[5]/input')
     btnActivity.click()
     time.sleep(2)
 
@@ -584,17 +636,19 @@ def reporte1261(xpathBPO, xpathActivity, xpatkCampana):
     botonSearch.click()
     time.sleep(2)
 
-    #Selecciona Activity
+    # Selecciona Activity
     checkBoxCampana = driver.find_element(By.XPATH, xpathActivity)
     checkBoxCampana.click()
     time.sleep(5)
 
-    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk = driver.find_element(
+        By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
     BotonOk.click()
     time.sleep(2)
 
     # === Campaign ===
-    btnCampaign = driver.find_element(By.XPATH, '//*[@id="CampaignViewControl"]/table/tbody/tr/td[5]/input')
+    btnCampaign = driver.find_element(
+        By.XPATH, '//*[@id="CampaignViewControl"]/table/tbody/tr/td[5]/input')
     btnCampaign.click()
     time.sleep(2)
 
@@ -607,12 +661,13 @@ def reporte1261(xpathBPO, xpathActivity, xpatkCampana):
     botonSearch.click()
     time.sleep(2)
 
-    #Selecciona Campaign
+    # Selecciona Campaign
     checkBoxCampana = driver.find_element(By.XPATH, xpatkCampana)
     checkBoxCampana.click()
     time.sleep(2)
 
-    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk = driver.find_element(
+        By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
     BotonOk.click()
     time.sleep(2)
 
@@ -620,7 +675,7 @@ def reporte1261(xpathBPO, xpathActivity, xpatkCampana):
     BotonOk2.click()
     time.sleep(10)
 
-    #Descarga
+    # Descarga
     btnDowloand = driver.find_element(By.CLASS_NAME, 'ico_download')
     btnDowloand.click()
     time.sleep(1)
@@ -633,12 +688,14 @@ def reporte1261(xpathBPO, xpathActivity, xpatkCampana):
     excel2013.click()
     time.sleep(1)
 
-    confirmacionFinal = driver.find_element(By.ID, 'btnOk_downExcel2003Or2007WinId')
+    confirmacionFinal = driver.find_element(
+        By.ID, 'btnOk_downExcel2003Or2007WinId')
     confirmacionFinal.click()
     time.sleep(15)
     driver.switch_to.default_content()
 
-    cerrarInputParametros = driver.find_element(By.ID, 'view8adf609b6f1e1f27016f21e66fd10255_close')
+    cerrarInputParametros = driver.find_element(
+        By.ID, 'view8adf609b6f1e1f27016f21e66fd10255_close')
     cerrarInputParametros.click()
     time.sleep(2)
 
@@ -652,19 +709,21 @@ def reporte1261(xpathBPO, xpathActivity, xpatkCampana):
 # +++++ Fin Reporte 1261 +++++
 
 # +++++ 5. Funcion Reporte 90 +++++
+
+
 def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
-    #Menu principal
+    # Menu principal
     systemMenu = driver.find_element(By.ID, 'systemMenu')
     systemMenu.click()
     time.sleep(1)
-    #selecciona Resource manager del menu principal
+    # selecciona Resource manager del menu principal
     resourceManager = driver.find_element(By.ID, 's_800')
     resourceManager.click()
     time.sleep(5)
-    #Dentro del Resource Manager
+    # Dentro del Resource Manager
     driver.switch_to.frame('tabPage_800_iframe')
     driver.switch_to.frame('container')
-    lupa = driver.find_element(By.ID,'searchResource')
+    lupa = driver.find_element(By.ID, 'searchResource')
     lupa.click()
     time.sleep(1)
     driver.switch_to.default_content()
@@ -672,7 +731,7 @@ def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
 
     codigoCampana = 90
     driver.switch_to.frame('searchResource_iframe')
-    textBox = driver.find_element(By.ID,'searchCondtion_input_value')
+    textBox = driver.find_element(By.ID, 'searchCondtion_input_value')
     textBox.send_keys(codigoCampana)
     time.sleep(1)
 
@@ -689,17 +748,19 @@ def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
     driver.switch_to.frame('view8adf649b5237e8b7015352f0feb700d9_iframe')
 
     # === Campaign ===
-    btnCampaign = driver.find_element(By.XPATH, '//*[@id="rpt_param_ComboxId2"]/div/div')
+    btnCampaign = driver.find_element(
+        By.XPATH, '//*[@id="rpt_param_ComboxId2"]/div/div')
     btnCampaign.click()
     time.sleep(2)
 
-    #Selecciona Campaign
-    seleccionDefault = driver.find_element(By.XPATH, '/html/body/div[13]/ul/li[1]/span')
+    # Selecciona Campaign
+    seleccionDefault = driver.find_element(
+        By.XPATH, '/html/body/div[13]/ul/li[1]/span')
     seleccionDefault.click()
     time.sleep(1)
     seleccionDefault.click()
     time.sleep(1)
-    
+
     checkBoxCampana = driver.find_element(By.XPATH, xpathCampana)
     checkBoxCampana.click()
     time.sleep(2)
@@ -708,15 +769,17 @@ def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
     time.sleep(2)
 
     # === BPO ===
-    btnBPO = driver.find_element(By.XPATH, '//*[@id="rpt_param_ComboxId3"]/div/div')
+    btnBPO = driver.find_element(
+        By.XPATH, '//*[@id="rpt_param_ComboxId3"]/div/div')
     btnBPO.click()
     time.sleep(2)
 
-    #Selecciona BPO
-    seleccionDefault = driver.find_element(By.XPATH, '/html/body/div[14]/ul/li[1]/span')
+    # Selecciona BPO
+    seleccionDefault = driver.find_element(
+        By.XPATH, '/html/body/div[14]/ul/li[1]/span')
     seleccionDefault.click()
-    time.sleep(1) 
-    
+    time.sleep(1)
+
     checkBoxBPO = driver.find_element(By.XPATH, xpathBPO)
     checkBoxBPO.click()
     time.sleep(2)
@@ -725,16 +788,18 @@ def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
     time.sleep(2)
 
     # === Agent Group ===
-    btnActivity = driver.find_element(By.XPATH, '//*[@id="AgentWorkGroupViewControl"]/table/tbody/tr/td[5]/input')
+    btnActivity = driver.find_element(
+        By.XPATH, '//*[@id="AgentWorkGroupViewControl"]/table/tbody/tr/td[5]/input')
     btnActivity.click()
     time.sleep(2)
 
-    #Selecciona Agent Group
+    # Selecciona Agent Group
     checkBoxCampana = driver.find_element(By.XPATH, xpathAgentGroup)
     checkBoxCampana.click()
     time.sleep(5)
 
-    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk = driver.find_element(
+        By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
     BotonOk.click()
     time.sleep(2)
 
@@ -742,7 +807,7 @@ def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
     BotonOk2.click()
     time.sleep(10)
 
-    #Descarga
+    # Descarga
     btnDowloand = driver.find_element(By.CLASS_NAME, 'ico_download')
     btnDowloand.click()
     time.sleep(1)
@@ -755,12 +820,14 @@ def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
     excel2013.click()
     time.sleep(1)
 
-    confirmacionFinal = driver.find_element(By.ID, 'btnOk_downExcel2003Or2007WinId')
+    confirmacionFinal = driver.find_element(
+        By.ID, 'btnOk_downExcel2003Or2007WinId')
     confirmacionFinal.click()
     time.sleep(15)
     driver.switch_to.default_content()
 
-    cerrarInputParametros = driver.find_element(By.ID, 'view8adf649b5237e8b7015352f0feb700d9_close')
+    cerrarInputParametros = driver.find_element(
+        By.ID, 'view8adf649b5237e8b7015352f0feb700d9_close')
     cerrarInputParametros.click()
     time.sleep(2)
 
@@ -773,39 +840,40 @@ def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
     time.sleep(2)
 # +++++ Fin Reporte 90 +++++
 
-#Descarga de reportes
+
+# Descarga de reportes
 # === Reportes 1259 ===
-#Blindaje
+# Blindaje
 labelC = f'OUTBPOPERETENSF'
 reporte1259(f'//input[@type="checkbox" and @label="{labelC}"]')
 nombreAsignado = 'blindaje_bicp_1259_'
 nombre = nombreReporte(nombreAsignado)
-destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\bicp\1259'
+destino = directoryPath + r'/carga\blindaje\bicp\1259'
 renombrarReubicar(nombre, destino)
 
-#Recupero Inbound
+# Recupero Inbound
 labelC = f'BPOPERETENCIONOUT'
 reporte1259(f'//input[@type="checkbox" and @label="{labelC}"]')
 nombreAsignado = 'RecuperoInbound_bicp_1259_'
 nombre = nombreReporte(nombreAsignado)
-destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\recuperoInbound\bicp\1259'
+destino = directoryPath + r'/carga\recuperoInbound\bicp\1259'
 renombrarReubicar(nombre, destino)
 
-#Contactados
+# Contactados
 labelC = f'OUTBPOPEPREVENPOSTREDSF'
 reporte1259(f'//input[@type="checkbox" and @label="{labelC}"]')
 nombreAsignado = 'contactado_bicp_1259_'
 nombre = nombreReporte(nombreAsignado)
-destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\contactado\bicp\1259'
+destino = directoryPath + r'/carga\contactado\bicp\1259'
 renombrarReubicar(nombre, destino)
 
-#Retenciones Inbound
-#Pendiente
+# Retenciones Inbound
+# Pendiente
 
 # === Fin Reporte 1259 ===
 
 # === Reporte 401 ===
-#Blindaje
+# Blindaje
 labelBPO = f'OUTBPOPERETENSF'
 xpathBPO = f'//input[@type="checkbox" and @label="{labelBPO}"]'
 
@@ -819,10 +887,10 @@ xpathAgentWorkgroup = f'//input[@type="checkbox" and @label="{labelAG}"]'
 reporte401(xpathBPO, txtCampana, xpathCampana, xpathAgentWorkgroup)
 nombreAsignado = 'blindaje_bicp_401_'
 nombre = nombreReporte(nombreAsignado)
-destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\bicp\401'
+destino = directoryPath + r'/carga\blindaje\bicp\401'
 renombrarReubicar(nombre, destino)
 
-#Recupero Inbound
+# Recupero Inbound
 labelBPO = f'BPOPERETENCIONOUT'
 xpathBPO = f'//input[@type="checkbox" and @label="{labelBPO}"]'
 
@@ -833,10 +901,10 @@ xpathCampana = f'//input[@type="checkbox" and @value="{valueC}"]'
 reporte401(xpathBPO, txtCampana, xpathCampana)
 nombreAsignado = 'RecuperoInbound_bicp_401_'
 nombre = nombreReporte(nombreAsignado)
-destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\recuperoInbound\bicp\401'
+destino = directoryPath + r'/carga\recuperoInbound\bicp\401'
 renombrarReubicar(nombre, destino)
 
-#Contactado
+# Contactado
 labelBPO = f'OUTBPOPEPREVENPOSTREDSF'
 xpathBPO = f'//input[@type="checkbox" and @label="{labelBPO}"]'
 
@@ -847,44 +915,44 @@ xpathCampana = f'//input[@type="checkbox" and @value="{valueC}"]'
 reporte401(xpathBPO, txtCampana, xpathCampana)
 nombreAsignado = 'contactado_bicp_401_'
 nombre = nombreReporte(nombreAsignado)
-destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\contactado\bicp\401'
+destino = directoryPath + r'/carga\contactado\bicp\401'
 renombrarReubicar(nombre, destino)
 
 # === Fin Reportes 401 ===
 
 # === Reportes 112 ===
-#Blindaje
+# Blindaje
 labelC = f'OUTBPOPERETENSF'
 xpathBPO = f'//input[@type="checkbox" and @label="{labelC}"]'
 reporte112(xpathBPO)
 nombreAsignado = 'blindaje_bicp_112_'
 nombre = nombreReporte(nombreAsignado)
-destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\bicp\112'
+destino = directoryPath + r'/carga\blindaje\bicp\112'
 renombrarReubicar(nombre, destino)
 
-#Contactado
+# Contactado
 labelC = f'OUTBPOPEPREVENPOSTREDSF'
 xpathBPO = f'//input[@type="checkbox" and @label="{labelC}"]'
 reporte112(xpathBPO)
 nombreAsignado = 'contactado_bicp_112_'
 nombre = nombreReporte(nombreAsignado)
-destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\contactado\bicp\112'
+destino = directoryPath + r'/carga\contactado\bicp\112'
 renombrarReubicar(nombre, destino)
 
-#Retenciones Inbound
+# Retenciones Inbound
 labelC = f'BPOPERURETENCION'
 xpathBPO = f'//input[@type="checkbox" and @label="{labelC}"]'
 reporte112(xpathBPO)
 nombreAsignado = 'RetencionesInbound_bicp_112_'
 nombre = nombreReporte(nombreAsignado)
-destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\retencionesInbound\bicp\112'
+destino = directoryPath + r'/carga\retencionesInbound\bicp\112'
 renombrarReubicar(nombre, destino)
 
 # === Fin Reportes 112 ===
 
 # === Descarga Reportes 1261 ===
-#1. Blindaje
-    #    ---- OUTBPOPERETENMOVSF01 ----
+# 1. Blindaje
+#    ---- OUTBPOPERETENMOVSF01 ----
 labelBPO = 'OUTBPOPERETENSF'
 xpathBPO = f'//input[@type="radio" and @label="{labelBPO}"]'
 
@@ -896,10 +964,10 @@ xpatkCampana = f'//input[@type="radio" and @label="{labelC}"]'
 reporte1261(xpathBPO, xpathActivity, xpatkCampana)
 nombreAsignado = 'blindajeMov01_bicp_1261_'
 nombre = nombreReporte(nombreAsignado)
-destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\BICP\1261'
+destino = directoryPath + r'/carga\blindaje\BICP\1261'
 renombrarReubicar(nombre, destino)
 
-    #    ---- OUTBPOPERETENMOVSF02 ----
+#    ---- OUTBPOPERETENMOVSF02 ----
 labelBPO = 'OUTBPOPERETENSF'
 xpathBPO = f'//input[@type="radio" and @label="{labelBPO}"]'
 
@@ -911,10 +979,10 @@ xpatkCampana = f'//input[@type="radio" and @label="{labelC}"]'
 reporte1261(xpathBPO, xpathActivity, xpatkCampana)
 nombreAsignado = 'blindajeMov02_bicp_1261_'
 nombre = nombreReporte(nombreAsignado)
-destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\BICP\1261'
+destino = directoryPath + r'/carga\blindaje\BICP\1261'
 renombrarReubicar(nombre, destino)
 
-    #    ---- OUTBPOPERETENBITSF03 ----
+#    ---- OUTBPOPERETENBITSF03 ----
 labelBPO = 'OUTBPOPERETENSF'
 xpathBPO = f'//input[@type="radio" and @label="{labelBPO}"]'
 
@@ -926,13 +994,13 @@ xpatkCampana = f'//input[@type="radio" and @label="{labelC}"]'
 reporte1261(xpathBPO, xpathActivity, xpatkCampana)
 nombreAsignado = 'blindajeBit03_bicp_1261_'
 nombre = nombreReporte(nombreAsignado)
-destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\BICP\1261'
+destino = directoryPath + r'/carga\blindaje\BICP\1261'
 renombrarReubicar(nombre, destino)
 
 # === Fin Reportes 1261 ===
 
 # === Reporte 90 ===
-#Retenciones Inbound
+# Retenciones Inbound
 titleC = 'RETENCIONESMOVILES'
 xpatkCampana = f'//li[@title="{titleC}"]'
 
@@ -940,22 +1008,23 @@ titleBPO = 'BPOPERURETENCION'
 xpathBPO = f'//li[@title="{titleBPO}"]'
 
 labelAG = '1070^BPOPERURETENCION'
-xpathAgentG= f'//input[@type="checkbox" and @label="{labelAG}"]'
+xpathAgentG = f'//input[@type="checkbox" and @label="{labelAG}"]'
 
 reporte90(xpatkCampana, xpathBPO, xpathAgentG)
 nombreAsignado = 'retencionesInbound_bicp_90_'
 nombre = nombreReporte(nombreAsignado)
-destino = r'C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\retencionesInbound\BICP\1261'
+destino = directoryPath + r'/carga\retencionesInbound\BICP\1261'
 renombrarReubicar(nombre, destino)
 
 # === Fin Reportes 90 ===
 
-#Cierra la aplicacion
+# Cierra la aplicacion
 fun_logout = driver.find_element(By.ID, 'fun_logout')
 fun_logout.click()
 time.sleep(1)
 
-confirmaCierreSesion = driver.find_element(By.XPATH, '//*[@id="winmsg0"]/div/div[2]/div[3]/div[3]/span[1]/div/div')
+confirmaCierreSesion = driver.find_element(
+    By.XPATH, '//*[@id="winmsg0"]/div/div[2]/div[3]/div[3]/span[1]/div/div')
 confirmaCierreSesion.click()
 time.sleep(3)
 

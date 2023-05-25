@@ -1081,12 +1081,12 @@ xpathAgentG = f'//input[@type="checkbox" and @label="{labelAG}"]'
 reporte90(xpatkCampana, xpathBPO, xpathAgentG)
 nombreAsignado = 'retencionesInbound_bicp_90_'
 nombre = nombreReporte(nombreAsignado)
-destino = directoryPath + r'/carga\retencionesInbound\BICP\1261'
+destino = directoryPath + r'/carga\retencionesInbound\BICP\90'
 renombrarReubicar(nombre, destino)
 
 # Enviamos los archivos descargados al Servidor
 pathLocal = destino + '/' + f'{nombre}.xlsx'
-pathServer = r'carga/retencionesInbound/BICP/1261/' + f'{nombre}.xlsx'
+pathServer = r'carga/retencionesInbound/BICP/90/' + f'{nombre}.xlsx'
 subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 

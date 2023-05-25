@@ -11,11 +11,11 @@ ftp = FTP(host)
 login_status = ftp.login(user=username, passwd=password)
 
 # Subir un archivo al servidor FTP
-archivo_local = '/carga' + str(sys.args[1])
-archivo_remoto = archivo_local
+archivo_local = str(sys.argv[1])
+archivo_remoto = str(sys.argv[2])
+
 with open(archivo_local, 'rb') as archivo:
     ftp.storbinary('STOR ' + archivo_remoto, archivo)
-
 
 # Cerrar la conexión FTP
 ftp.quit()

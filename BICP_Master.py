@@ -16,6 +16,7 @@ import glob
 import shutil
 from datetime import datetime, timedelta
 import random
+import subprocess
 
 directoryPath = os.getcwd()
 
@@ -23,7 +24,7 @@ directoryPath = os.getcwd()
 
 
 def renombrarReubicar(nuevoNombre, carpetaDestino):
-    #ruta_descargas = r"C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\descargaRobotin"
+    # ruta_descargas = r"C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\descargaRobotin"
     ruta_descargas = directoryPath + r'/temp'
     archivos_descargados = sorted(
         glob.glob(os.path.join(ruta_descargas, '*')), key=os.path.getmtime, reverse=True
@@ -49,19 +50,20 @@ def nombreReporte(name):
     fechaHora = datetime.now()
     fecha = fechaHora.strftime("%Y%m%d_%H%M%S")
     aleatorio = str(random.randint(100, 999))
-    #nameFile = name + fecha + '_' + aleatorio
+    nameFile = name + fecha + '_' + aleatorio
     print(name + fecha + '_' + aleatorio)
-    
+    return nameFile
 
 
 # Especifica la ruta del controlador de Chrome
 pathDriver = "113/chromedriver.exe"
 
 # Especifica Directorio de descarga
+defaultPathDownloads = directoryPath + r'\temp'
 options = webdriver.ChromeOptions()
 options.add_experimental_option("prefs", {
-    #"download.default_directory": r"C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\descargaRobotin",
-    "download.default_directory": directoryPath + r'/temp',
+    # "download.default_directory": r"C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\descargaRobotin",
+    "download.default_directory": defaultPathDownloads,
     "download.prompt_for_download": False,
     "download.directory_upgrade": True,
     "safebrowsing.enabled": True
@@ -851,6 +853,11 @@ nombre = nombreReporte(nombreAsignado)
 destino = directoryPath + r'/carga\blindaje\bicp\1259'
 renombrarReubicar(nombre, destino)
 
+# Enviamos los archivos descargados al Servidor
+pathLocal = destino + '/' + f'{nombre}.xlsx'
+pathServer = r'carga/blindaje/bicp/1259/' + f'{nombre}.xlsx'
+subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
+
 # Recupero Inbound
 labelC = f'BPOPERETENCIONOUT'
 reporte1259(f'//input[@type="checkbox" and @label="{labelC}"]')
@@ -859,6 +866,11 @@ nombre = nombreReporte(nombreAsignado)
 destino = directoryPath + r'/carga\recuperoInbound\bicp\1259'
 renombrarReubicar(nombre, destino)
 
+# Enviamos los archivos descargados al Servidor
+pathLocal = destino + '/' + f'{nombre}.xlsx'
+pathServer = r'carga/recuperoInbound/bicp/1259' + f'{nombre}.xlsx'
+subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
+
 # Contactados
 labelC = f'OUTBPOPEPREVENPOSTREDSF'
 reporte1259(f'//input[@type="checkbox" and @label="{labelC}"]')
@@ -866,6 +878,11 @@ nombreAsignado = 'contactado_bicp_1259_'
 nombre = nombreReporte(nombreAsignado)
 destino = directoryPath + r'/carga\contactado\bicp\1259'
 renombrarReubicar(nombre, destino)
+
+# Enviamos los archivos descargados al Servidor
+pathLocal = destino + '/' + f'{nombre}.xlsx'
+pathServer = r'carga/contactado/bicp/1259' + f'{nombre}.xlsx'
+subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 # Retenciones Inbound
 # Pendiente
@@ -890,6 +907,11 @@ nombre = nombreReporte(nombreAsignado)
 destino = directoryPath + r'/carga\blindaje\bicp\401'
 renombrarReubicar(nombre, destino)
 
+# Enviamos los archivos descargados al Servidor
+pathLocal = destino + '/' + f'{nombre}.xlsx'
+pathServer = r'carga/blindaje/bicp/401' + f'{nombre}.xlsx'
+subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
+
 # Recupero Inbound
 labelBPO = f'BPOPERETENCIONOUT'
 xpathBPO = f'//input[@type="checkbox" and @label="{labelBPO}"]'
@@ -903,6 +925,11 @@ nombreAsignado = 'RecuperoInbound_bicp_401_'
 nombre = nombreReporte(nombreAsignado)
 destino = directoryPath + r'/carga\recuperoInbound\bicp\401'
 renombrarReubicar(nombre, destino)
+
+# Enviamos los archivos descargados al Servidor
+pathLocal = destino + '/' + f'{nombre}.xlsx'
+pathServer = r'carga/recuperoInbound/bicp/401' + f'{nombre}.xlsx'
+subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 # Contactado
 labelBPO = f'OUTBPOPEPREVENPOSTREDSF'
@@ -918,6 +945,11 @@ nombre = nombreReporte(nombreAsignado)
 destino = directoryPath + r'/carga\contactado\bicp\401'
 renombrarReubicar(nombre, destino)
 
+# Enviamos los archivos descargados al Servidor
+pathLocal = destino + '/' + f'{nombre}.xlsx'
+pathServer = r'carga/contactado/bicp/401' + f'{nombre}.xlsx'
+subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
+
 # === Fin Reportes 401 ===
 
 # === Reportes 112 ===
@@ -930,6 +962,12 @@ nombre = nombreReporte(nombreAsignado)
 destino = directoryPath + r'/carga\blindaje\bicp\112'
 renombrarReubicar(nombre, destino)
 
+# Enviamos los archivos descargados al Servidor
+pathLocal = destino + '/' + f'{nombre}.xlsx'
+pathServer = r'carga/blindaje/bicp/112' + f'{nombre}.xlsx'
+subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
+
+
 # Contactado
 labelC = f'OUTBPOPEPREVENPOSTREDSF'
 xpathBPO = f'//input[@type="checkbox" and @label="{labelC}"]'
@@ -939,6 +977,12 @@ nombre = nombreReporte(nombreAsignado)
 destino = directoryPath + r'/carga\contactado\bicp\112'
 renombrarReubicar(nombre, destino)
 
+# Enviamos los archivos descargados al Servidor
+pathLocal = destino + '/' + f'{nombre}.xlsx'
+pathServer = r'carga/contactado/bicp/112' + f'{nombre}.xlsx'
+subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
+
+
 # Retenciones Inbound
 labelC = f'BPOPERURETENCION'
 xpathBPO = f'//input[@type="checkbox" and @label="{labelC}"]'
@@ -947,6 +991,12 @@ nombreAsignado = 'RetencionesInbound_bicp_112_'
 nombre = nombreReporte(nombreAsignado)
 destino = directoryPath + r'/carga\retencionesInbound\bicp\112'
 renombrarReubicar(nombre, destino)
+
+# Enviamos los archivos descargados al Servidor
+pathLocal = destino + '/' + f'{nombre}.xlsx'
+pathServer = r'carga/retencionesInbound/bicp/112' + f'{nombre}.xlsx'
+subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
+
 
 # === Fin Reportes 112 ===
 
@@ -967,6 +1017,12 @@ nombre = nombreReporte(nombreAsignado)
 destino = directoryPath + r'/carga\blindaje\BICP\1261'
 renombrarReubicar(nombre, destino)
 
+# Enviamos los archivos descargados al Servidor
+pathLocal = destino + '/' + f'{nombre}.xlsx'
+pathServer = r'carga/blindaje/BICP/1261' + f'{nombre}.xlsx'
+subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
+
+
 #    ---- OUTBPOPERETENMOVSF02 ----
 labelBPO = 'OUTBPOPERETENSF'
 xpathBPO = f'//input[@type="radio" and @label="{labelBPO}"]'
@@ -982,6 +1038,12 @@ nombre = nombreReporte(nombreAsignado)
 destino = directoryPath + r'/carga\blindaje\BICP\1261'
 renombrarReubicar(nombre, destino)
 
+# Enviamos los archivos descargados al Servidor
+pathLocal = destino + '/' + f'{nombre}.xlsx'
+pathServer = r'carga/blindaje/BICP/1261' + f'{nombre}.xlsx'
+subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
+
+
 #    ---- OUTBPOPERETENBITSF03 ----
 labelBPO = 'OUTBPOPERETENSF'
 xpathBPO = f'//input[@type="radio" and @label="{labelBPO}"]'
@@ -996,6 +1058,12 @@ nombreAsignado = 'blindajeBit03_bicp_1261_'
 nombre = nombreReporte(nombreAsignado)
 destino = directoryPath + r'/carga\blindaje\BICP\1261'
 renombrarReubicar(nombre, destino)
+
+# Enviamos los archivos descargados al Servidor
+pathLocal = destino + '/' + f'{nombre}.xlsx'
+pathServer = r'carga/blindaje/BICP/1261' + f'{nombre}.xlsx'
+subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
+
 
 # === Fin Reportes 1261 ===
 
@@ -1015,6 +1083,12 @@ nombreAsignado = 'retencionesInbound_bicp_90_'
 nombre = nombreReporte(nombreAsignado)
 destino = directoryPath + r'/carga\retencionesInbound\BICP\1261'
 renombrarReubicar(nombre, destino)
+
+# Enviamos los archivos descargados al Servidor
+pathLocal = destino + '/' + f'{nombre}.xlsx'
+pathServer = r'carga/retencionesInbound/BICP/1261' + f'{nombre}.xlsx'
+subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
+
 
 # === Fin Reportes 90 ===
 

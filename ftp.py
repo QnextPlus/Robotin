@@ -1,5 +1,6 @@
 from ftplib import FTP
 import os
+import sys
 
 host = "66.206.10.130"
 username = "bicp"
@@ -10,8 +11,8 @@ ftp = FTP(host)
 login_status = ftp.login(user=username, passwd=password)
 
 # Subir un archivo al servidor FTP
-archivo_local = 'carga/ISAC_DE_LA_CRUZ_CDR_6_Level_Report_for_Outbound_Campaign_-_ALL_CALLS(2)_769813727.xlsx'
-archivo_remoto = 'carga/archivo.xlsx'
+archivo_local = '/carga' + str(sys.args[1])
+archivo_remoto = archivo_local
 with open(archivo_local, 'rb') as archivo:
     ftp.storbinary('STOR ' + archivo_remoto, archivo)
 

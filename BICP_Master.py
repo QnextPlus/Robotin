@@ -1076,7 +1076,7 @@ renombrarReubicar(nombre, destino)
 
 # Enviamos los archivos descargados al Servidor
 pathLocal = destino + '/' + f'{nombre}.xlsx'
-pathServer = r'carga/recuperoInbound/bicp/1259' + f'{nombre}.xlsx'
+pathServer = r'carga/recuperoInbound/bicp/1259/' + f'{nombre}.xlsx'
 subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 # Contactados
@@ -1089,7 +1089,7 @@ renombrarReubicar(nombre, destino)
 
 # Enviamos los archivos descargados al Servidor
 pathLocal = destino + '/' + f'{nombre}.xlsx'
-pathServer = r'carga/contactado/bicp/1259' + f'{nombre}.xlsx'
+pathServer = r'carga/contactado/bicp/1259/' + f'{nombre}.xlsx'
 subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 # Retenciones Inbound
@@ -1117,7 +1117,7 @@ renombrarReubicar(nombre, destino)
 
 # Enviamos los archivos descargados al Servidor
 pathLocal = destino + '/' + f'{nombre}.xlsx'
-pathServer = r'carga/blindaje/bicp/401' + f'{nombre}.xlsx'
+pathServer = r'carga/blindaje/bicp/401/' + f'{nombre}.xlsx'
 subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 # Recupero Inbound
@@ -1136,7 +1136,7 @@ renombrarReubicar(nombre, destino)
 
 # Enviamos los archivos descargados al Servidor
 pathLocal = destino + '/' + f'{nombre}.xlsx'
-pathServer = r'carga/recuperoInbound/bicp/401' + f'{nombre}.xlsx'
+pathServer = r'carga/recuperoInbound/bicp/401/' + f'{nombre}.xlsx'
 subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 # Contactado
@@ -1155,7 +1155,7 @@ renombrarReubicar(nombre, destino)
 
 # Enviamos los archivos descargados al Servidor
 pathLocal = destino + '/' + f'{nombre}.xlsx'
-pathServer = r'carga/contactado/bicp/401' + f'{nombre}.xlsx'
+pathServer = r'carga/contactado/bicp/401/' + f'{nombre}.xlsx'
 subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 # === Fin Reportes 401 ===
@@ -1172,7 +1172,7 @@ renombrarReubicar(nombre, destino)
 
 # Enviamos los archivos descargados al Servidor
 pathLocal = destino + '/' + f'{nombre}.xlsx'
-pathServer = r'carga/blindaje/bicp/112' + f'{nombre}.xlsx'
+pathServer = r'carga/blindaje/bicp/112/' + f'{nombre}.xlsx'
 subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 
@@ -1187,7 +1187,7 @@ renombrarReubicar(nombre, destino)
 
 # Enviamos los archivos descargados al Servidor
 pathLocal = destino + '/' + f'{nombre}.xlsx'
-pathServer = r'carga/contactado/bicp/112' + f'{nombre}.xlsx'
+pathServer = r'carga/contactado/bicp/112/' + f'{nombre}.xlsx'
 subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 
@@ -1202,7 +1202,7 @@ renombrarReubicar(nombre, destino)
 
 # Enviamos los archivos descargados al Servidor
 pathLocal = destino + '/' + f'{nombre}.xlsx'
-pathServer = r'carga/retencionesInbound/bicp/112' + f'{nombre}.xlsx'
+pathServer = r'carga/retencionesInbound/bicp/112/' + f'{nombre}.xlsx'
 subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 
@@ -1227,7 +1227,7 @@ renombrarReubicar(nombre, destino)
 
 # Enviamos los archivos descargados al Servidor
 pathLocal = destino + '/' + f'{nombre}.xlsx'
-pathServer = r'carga/blindaje/BICP/1261' + f'{nombre}.xlsx'
+pathServer = r'carga/blindaje/bicp/1261/' + f'{nombre}.xlsx'
 subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 
@@ -1248,7 +1248,7 @@ renombrarReubicar(nombre, destino)
 
 # Enviamos los archivos descargados al Servidor
 pathLocal = destino + '/' + f'{nombre}.xlsx'
-pathServer = r'carga/blindaje/BICP/1261' + f'{nombre}.xlsx'
+pathServer = r'carga/blindaje/bicp/1261/' + f'{nombre}.xlsx'
 subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 
@@ -1269,7 +1269,7 @@ renombrarReubicar(nombre, destino)
 
 # Enviamos los archivos descargados al Servidor
 pathLocal = destino + '/' + f'{nombre}.xlsx'
-pathServer = r'carga/blindaje/BICP/1261' + f'{nombre}.xlsx'
+pathServer = r'carga/blindaje/bicp/1261/' + f'{nombre}.xlsx'
 subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 
@@ -1294,7 +1294,11 @@ renombrarReubicar(nombre, destino)
 
 # Enviamos los archivos descargados al Servidor
 pathLocal = destino + '/' + f'{nombre}.xlsx'
+<<<<<<< HEAD
 pathServer = r'carga/retencionesInbound/BICP/90' + f'{nombre}.xlsx'
+=======
+pathServer = r'carga/retencionesInbound/bicp/90/' + f'{nombre}.xlsx'
+>>>>>>> 4b2a0528436372ede81221410258020ea7345783
 subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 
@@ -1350,4 +1354,4 @@ time.sleep(3)
 
 driver.quit()
 
-print('Descarga Exitosa')
+print('Descarga Exitosa.')

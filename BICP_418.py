@@ -16,15 +16,13 @@ import pyautogui
 import os
 import glob
 
-directoryPath = os.getcwd()
-defaultPathDownloads = directoryPath + r'\temp'
 # Especifica la ruta del controlador de Chrome
 pathDriver = "113/chromedriver.exe"
 
 #Especifica Directorio de descarga
 options = webdriver.ChromeOptions()
 options.add_experimental_option("prefs", {
-    "download.default_directory": defaultPathDownloads,
+    "download.default_directory": r"C:\Users\Usuario\Documents\terceriza\Robot\descargasPython\blindaje\bicp\1261",
     "download.prompt_for_download": False,
     "download.directory_upgrade": True,
     "safebrowsing.enabled": True
@@ -35,7 +33,7 @@ options.add_argument("--ignore-certificate-errors")
 
 # Especifica los detalles de la URL, nombre de usuario y contraseña
 url = "https://10.95.224.27:9083/bicp/login.action"
-username = "E8234353"
+username = "E8234180" #Michael
 password = "JJJmm88***1"
 
 
@@ -48,15 +46,6 @@ time.sleep(1)
 elemento_cierre = driver.find_element(By.XPATH, '//*[@id="tipClose"]')
 elemento_cierre.click()
 time.sleep(1)
-
-#Funcion cuenta cantidad de archivos xlsx en carpeta de descarga
-def cantidadExcel():
-    ruta_carpeta = defaultPathDownloads
-    extension = '*.xlsx'
-    patron_busqueda = os.path.join(ruta_carpeta, extension)
-    archivos = glob.glob(patron_busqueda)
-    cantidad_archivos = len(archivos)
-    return cantidad_archivos
 
 #funcion para obtener el captcha
 def obtenerCaptcha():
@@ -163,18 +152,17 @@ while hayCookie:
 else:
     pass
 
-# +++++ Funcion Reporte 26 +++++
-def reporte26(xpathCampana, xpathBPO):
+# +++++ Funcion Reporte 418 +++++
+def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
     #Menu principal
     systemMenu = driver.find_element(By.ID, 'systemMenu')
     systemMenu.click()
-
     time.sleep(1)
     #selecciona Resource manager del menu principal
     resourceManager = driver.find_element(By.ID, 's_800')
     resourceManager.click()
     time.sleep(5)
-
+    #Dentro del Resource Manager
     driver.switch_to.frame('tabPage_800_iframe')
     driver.switch_to.frame('container')
     lupa = driver.find_element(By.ID,'searchResource')
@@ -183,7 +171,7 @@ def reporte26(xpathCampana, xpathBPO):
     driver.switch_to.default_content()
     driver.switch_to.default_content()
 
-    codigoCampana = 26
+    codigoCampana = 418
     driver.switch_to.frame('searchResource_iframe')
     textBox = driver.find_element(By.ID,'searchCondtion_input_value')
     textBox.send_keys(codigoCampana)
@@ -198,71 +186,66 @@ def reporte26(xpathCampana, xpathBPO):
     driver.switch_to.default_content()
     time.sleep(5)
 
-    #dentro del input resource
-    driver.switch_to.frame('view8adf609c511ba97601511ba991d20056_iframe')
+    # Dentro del Input source
+    driver.switch_to.frame('view8adf609c64556ca701645a17ef88026a_iframe')
 
-    # === Campaign Name ===
-    comboBoxCN = driver.find_element(By.XPATH, '//*[@id="rpt_param_ComboxId2"]/div/div')
-    comboBoxCN.click()
+    # === Campaign ===
+    btnCampaign = driver.find_element(By.XPATH, '//*[@id="CampaignViewControl"]/table/tbody/tr/td[5]/input')
+    btnCampaign.click()
     time.sleep(2)
 
-    #desmarca selecion Default All
-    checkBoxDefault = driver.find_element(By.XPATH, '/html/body/div[13]/ul/li[1]/span')
-    checkBoxDefault.click()
-    time.sleep(1)
-
-    #Selecciona Campaign Name
+    #Selecciona Campaign
     checkBoxCampana = driver.find_element(By.XPATH, xpathCampana)
     checkBoxCampana.click()
     time.sleep(1)
 
-    comboBoxCN.click()
-    time.sleep(2)
-
-    # === BPO ====
-    comboBoxBPO = driver.find_element(By.XPATH, '//*[@id="rpt_param_ComboxId3"]/div/div')
-    comboBoxBPO.click()
-    time.sleep(2)
-
-    #desmarca selecion Default All
-    checkBoxDefault = driver.find_element(By.XPATH, '/html/body/div[14]/ul/li[1]/span')
-    checkBoxDefault.click()
+    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk.click()
     time.sleep(1)
+#No tenemos acceso
+    # === BPO ===
+    btnBPO = driver.find_element(By.XPATH, '//*[@id="rpt_param_ComboxId3"]/div/div')
+    btnBPO.click()
+    time.sleep(2)
 
     #Selecciona BPO
-    checkBoxCampana = driver.find_element(By.XPATH, xpathBPO)
-    checkBoxCampana.click()
-    time.sleep(1)
+    seleccionDefault = driver.find_element(By.XPATH, '/html/body/div[14]/ul/li[1]/span')
+    seleccionDefault.click()
+    time.sleep(1) 
+    
+    checkBoxBPO = driver.find_element(By.XPATH, xpathBPO)
+    checkBoxBPO.click()
+    time.sleep(2)
 
-    comboBoxBPO.click()
-    time.sleep(1)
+    btnBPO.click()
+    time.sleep(2)
+
+    # === Agent Group ===
+    btnActivity = driver.find_element(By.XPATH, '//*[@id="AgentWorkGroupViewControl"]/table/tbody/tr/td[5]/input')
+    btnActivity.click()
+    time.sleep(2)
+
+    #Selecciona Agent Group
+    checkBoxCampana = driver.find_element(By.XPATH, xpathAgentGroup)
+    checkBoxCampana.click()
+    time.sleep(5)
+
+    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk.click()
+    time.sleep(2)
 
     BotonOk2 = driver.find_element(By.ID, 'rpt_param_OkBtn')
     BotonOk2.click()
-    time.sleep(5)
+    time.sleep(10)
 
-    cantidadExcelinicial = cantidadExcel()
-    
     #Descarga
-    def descargar():
-        iconoDowloand = driver.find_element(By.CLASS_NAME, 'ico_download')
-        iconoDowloand.click()
-        time.sleep(1)
-        descargarExcel = driver.find_element(By.ID, 'downFullExcelMenuItemLiId')
-        descargarExcel.click()
-        #time.sleep(1)
+    btnDowloand = driver.find_element(By.CLASS_NAME, 'ico_download')
+    btnDowloand.click()
+    time.sleep(1)
 
-    noPuedeDescargar = True
-    while noPuedeDescargar:
-        try:
-            descargar()
-            noPuedeDescargar = False
-            time.sleep(5)
-        except NoAlertPresentException:
-            driver.switch_to.alert.accept()
-            noPuedeDescargar = True
-    else:
-        pass    
+    descargarExcel = driver.find_element(By.ID, 'downFullExcelMenuItemLiId')
+    descargarExcel.click()
+    time.sleep(1)
 
     excel2013 = driver.find_element(By.ID, 'downExcel2007Id')
     excel2013.click()
@@ -270,18 +253,10 @@ def reporte26(xpathCampana, xpathBPO):
 
     confirmacionFinal = driver.find_element(By.ID, 'btnOk_downExcel2003Or2007WinId')
     confirmacionFinal.click()
-    #time.sleep(15)
-    #Valida que la descarga concluya
-    cantidadExcelFinal = cantidadExcelinicial
-    while cantidadExcelFinal == cantidadExcelinicial:
-        time.sleep(1)
-        cantidadExcelFinal = cantidadExcel()
-    else:
-        pass
-
+    time.sleep(15)
     driver.switch_to.default_content()
 
-    cerrarInputParametros = driver.find_element(By.ID, 'view8adf609c511ba97601511ba991d20056_close')
+    cerrarInputParametros = driver.find_element(By.ID, 'view8adf649b5237e8b7015352f0feb700d9_close')
     cerrarInputParametros.click()
     time.sleep(2)
 
@@ -292,15 +267,23 @@ def reporte26(xpathCampana, xpathBPO):
     cerrarResourseManager = driver.find_element(By.ID, 'tabPage_800_close')
     cerrarResourseManager.click()
     time.sleep(2)
-# +++++ Fin funcon Reporte 26 +++++
+# +++++ Fin Reporte 90 +++++
 
-#descarga reporte 26
-titleC = 'RETENCIONESMOVILES'
-xpathCampana = f'//li[@title="{titleC}"]/span[@class="icon"]'
+# === Reporte ===
+#
+
+labelC = 'RETENCIONESMOVILES'
+xpatkCampana = f"//input[@label='{labelC}']"
 
 titleBPO = 'BPOPERURETENCION'
-xpathBPO = f'//li[@title="{titleBPO}"]/span[@class="icon"]'
-reporte26(xpathCampana ,xpathBPO)
+xpathBPO = f'//li[@title="{titleBPO}"]'
+
+labelAG = '1070^BPOPERURETENCION'
+xpathAgentG= f'//input[@type="checkbox" and @label="{labelAG}"]'
+
+reporte90(xpatkCampana, xpathBPO, xpathAgentG)
+
+# === Fin Reportes 90 ===
 
 #Cierra la aplicacion
 fun_logout = driver.find_element(By.ID, 'fun_logout')

@@ -35,7 +35,7 @@ options.add_argument("--ignore-certificate-errors")
 
 # Especifica los detalles de la URL, nombre de usuario y contraseña
 url = "https://10.95.224.27:9083/bicp/login.action"
-username = "E8234353"
+username = "E8234180" #Michael
 password = "JJJmm88***1"
 
 
@@ -163,8 +163,8 @@ while hayCookie:
 else:
     pass
 
-# +++++ Funcion Reporte 26 +++++
-def reporte26(xpathCampana, xpathBPO):
+# +++++ Funcion Reporte 194 +++++
+def reporte194(xpathBPO):
     #Menu principal
     systemMenu = driver.find_element(By.ID, 'systemMenu')
     systemMenu.click()
@@ -183,7 +183,7 @@ def reporte26(xpathCampana, xpathBPO):
     driver.switch_to.default_content()
     driver.switch_to.default_content()
 
-    codigoCampana = 26
+    codigoCampana = 194
     driver.switch_to.frame('searchResource_iframe')
     textBox = driver.find_element(By.ID,'searchCondtion_input_value')
     textBox.send_keys(codigoCampana)
@@ -199,70 +199,34 @@ def reporte26(xpathCampana, xpathBPO):
     time.sleep(5)
 
     #dentro del input resource
-    driver.switch_to.frame('view8adf609c511ba97601511ba991d20056_iframe')
-
-    # === Campaign Name ===
-    comboBoxCN = driver.find_element(By.XPATH, '//*[@id="rpt_param_ComboxId2"]/div/div')
-    comboBoxCN.click()
-    time.sleep(2)
-
-    #desmarca selecion Default All
-    checkBoxDefault = driver.find_element(By.XPATH, '/html/body/div[13]/ul/li[1]/span')
-    checkBoxDefault.click()
-    time.sleep(1)
-
-    #Selecciona Campaign Name
-    checkBoxCampana = driver.find_element(By.XPATH, xpathCampana)
-    checkBoxCampana.click()
-    time.sleep(1)
-
-    comboBoxCN.click()
-    time.sleep(2)
+    driver.switch_to.frame('view8adf609c5becac34015bf11be608063a_iframe')
 
     # === BPO ====
-    comboBoxBPO = driver.find_element(By.XPATH, '//*[@id="rpt_param_ComboxId3"]/div/div')
+    comboBoxBPO = driver.find_element(By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[3]/div/span/button/span[1]')
     comboBoxBPO.click()
     time.sleep(2)
-
-    #desmarca selecion Default All
-    checkBoxDefault = driver.find_element(By.XPATH, '/html/body/div[14]/ul/li[1]/span')
-    checkBoxDefault.click()
-    time.sleep(1)
 
     #Selecciona BPO
     checkBoxCampana = driver.find_element(By.XPATH, xpathBPO)
     checkBoxCampana.click()
     time.sleep(1)
 
-    comboBoxBPO.click()
-    time.sleep(1)
-
     BotonOk2 = driver.find_element(By.ID, 'rpt_param_OkBtn')
     BotonOk2.click()
-    time.sleep(5)
+    time.sleep(1)
 
     cantidadExcelinicial = cantidadExcel()
+    # Esperar hasta que la imagen loading ya no esté visible
+    WebDriverWait(driver, 60).until_not(EC.visibility_of_element_located((By.ID, "loadingImg")))
     
     #Descarga
-    def descargar():
-        iconoDowloand = driver.find_element(By.CLASS_NAME, 'ico_download')
-        iconoDowloand.click()
-        time.sleep(1)
-        descargarExcel = driver.find_element(By.ID, 'downFullExcelMenuItemLiId')
-        descargarExcel.click()
-        #time.sleep(1)
+    iconoDowloand = driver.find_element(By.CLASS_NAME, 'ico_download')
+    iconoDowloand.click()
+    time.sleep(1)
 
-    noPuedeDescargar = True
-    while noPuedeDescargar:
-        try:
-            descargar()
-            noPuedeDescargar = False
-            time.sleep(5)
-        except NoAlertPresentException:
-            driver.switch_to.alert.accept()
-            noPuedeDescargar = True
-    else:
-        pass    
+    descargarExcel = driver.find_element(By.ID, 'downFullExcelMenuItemLiId')
+    descargarExcel.click()
+    time.sleep(1)
 
     excel2013 = driver.find_element(By.ID, 'downExcel2007Id')
     excel2013.click()
@@ -281,7 +245,7 @@ def reporte26(xpathCampana, xpathBPO):
 
     driver.switch_to.default_content()
 
-    cerrarInputParametros = driver.find_element(By.ID, 'view8adf609c511ba97601511ba991d20056_close')
+    cerrarInputParametros = driver.find_element(By.ID, 'view8adf609c5becac34015bf11be608063a_close')
     cerrarInputParametros.click()
     time.sleep(2)
 
@@ -292,15 +256,12 @@ def reporte26(xpathCampana, xpathBPO):
     cerrarResourseManager = driver.find_element(By.ID, 'tabPage_800_close')
     cerrarResourseManager.click()
     time.sleep(2)
-# +++++ Fin funcon Reporte 26 +++++
+# +++++ Fin funcon Reporte 194 +++++
 
-#descarga reporte 26
-titleC = 'RETENCIONESMOVILES'
-xpathCampana = f'//li[@title="{titleC}"]/span[@class="icon"]'
-
-titleBPO = 'BPOPERURETENCION'
-xpathBPO = f'//li[@title="{titleBPO}"]/span[@class="icon"]'
-reporte26(xpathCampana ,xpathBPO)
+#descarga reporte 194
+titleBPO = "BPOPERURETENCION"
+xpathBPO = f"//li[@class='ui-menu-item']/a[@title='{titleBPO}']"
+reporte194(xpathBPO)
 
 #Cierra la aplicacion
 fun_logout = driver.find_element(By.ID, 'fun_logout')

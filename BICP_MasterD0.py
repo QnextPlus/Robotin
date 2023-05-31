@@ -15,7 +15,7 @@ import pyautogui
 import os
 import glob
 import shutil
-from datetime import datetime, timedelta
+import datetime
 import random
 import subprocess
 
@@ -44,12 +44,35 @@ def renombrarReubicar(nuevoNombre, carpetaDestino):
 
 # Funcion que crea el nombre del reporte
 def nombreReporte(name):
-    fechaHora = datetime.now()
+    fechaHora = datetime.datetime.now()
     fecha = fechaHora.strftime("%Y%m%d_%H%M%S")
     aleatorio = str(random.randint(100, 999))
     nameFile = name + fecha + '_' + aleatorio
     print(name + fecha + '_' + aleatorio)
     return nameFile
+
+# Funcion para obtener fechas
+def fecha():
+    fechaActual = datetime.date.today()
+    fechaSiguiente = fechaActual + datetime.timedelta(days=1)
+    horaCero = datetime.time(0, 0, 0)
+    fechaActualConHora = datetime.datetime.combine(fechaActual, horaCero)
+    fechaSiguienteConHora = datetime.datetime.combine(fechaSiguiente, horaCero)
+    formato = "%m/%d/%Y %H:%M:%S"
+    formato2 = "%Y-%m-%d %H:%M:%S"
+    faCH1 = fechaActualConHora.strftime(formato)
+    fsCH1 = fechaSiguienteConHora.strftime(formato)
+    faCH2 = fechaActualConHora.strftime(formato2)
+    fsCH2 = fechaSiguienteConHora.strftime(formato2)
+    faFormato1 = fechaActual.strftime("%m/%d/%Y")
+    fsFormato1 = fechaSiguiente.strftime("%m/%d/%Y")
+    fechaActual = str(fechaActual)
+    fechaSiguiente = str(fechaSiguiente)
+    fechas = {"hoyH":faCH1, 'mañanaH': fsCH1, 
+              'hoyH2': faCH2, 'mañanaH2': fsCH2,
+              'hoy': fechaActual, 'mañana': fechaSiguiente, 
+              'hoyF1': faFormato1, 'mañanaF1': fsFormato1}
+    return fechas
 
 # Especifica la ruta del controlador de Chrome
 pathDriver = "113/chromedriver.exe"
@@ -244,6 +267,21 @@ def reporte1259(xpathCamapana):
 
     # Seccion de Input de parámetros
     driver.switch_to.frame('view8adf609b6f1e1f27016f21e66d51024c_iframe')
+
+    #Periodo
+    fechaInicio = fecha()['hoyH']
+    fechaFin = fecha()['mañanaH']
+
+    startTime = driver.find_element(By.XPATH, '//*[@id="rpt_param_Value0"]')
+    startTime.clear()
+    startTime.send_keys(fechaInicio)
+    time.sleep(1)
+
+    endTime = driver.find_element(By.XPATH, '//*[@id="rpt_param_Value1"]')
+    endTime.clear()
+    endTime.send_keys(fechaFin)
+    time.sleep(1)
+
     # === BPO ===
     btnBPO = driver.find_element(
         By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
@@ -354,6 +392,20 @@ def reporte401(xpathBPO, txtCampana, xpathCampana, xpathAgentWorkgroup='noDefini
 
     # Seccion de Input de parámetros
     driver.switch_to.frame('view8adf609c6387afda01638b7f47b90570_iframe')
+
+    #Periodo
+    fechaInicio = fecha()['hoyH']
+    fechaFin = fecha()['mañanaH']
+
+    startTime = driver.find_element(By.XPATH, '//*[@id="rpt_param_Value0"]')
+    startTime.clear()
+    startTime.send_keys(fechaInicio)
+    time.sleep(1)
+
+    endTime = driver.find_element(By.XPATH, '//*[@id="rpt_param_Value1"]')
+    endTime.clear()
+    endTime.send_keys(fechaFin)
+    time.sleep(1)
 
     # === BPO ===
     btnBPO = driver.find_element(
@@ -514,9 +566,26 @@ def reporte112(xpathBPO):
     driver.switch_to.default_content()
     time.sleep(5)
 
+    #dentro del input parametros
+    driver.switch_to.frame('view8adf609c54f300b50154f46383e501a8_iframe')
+
+    #Periodo
+    fechaInicio = fecha()['hoy']
+    fechaFin = fecha()['mañana']
+
+    startTime = driver.find_element(By.XPATH, '//*[@id="rpt_param_Value0"]')
+    startTime.clear()
+    startTime.send_keys(fechaInicio)
+    time.sleep(1)
+
+    endTime = driver.find_element(By.XPATH, '//*[@id="rpt_param_Value1"]')
+    endTime.clear()
+    endTime.send_keys(fechaFin)
+    time.sleep(1)
+
     # === BPO ===
     # Seleccionar campaña
-    driver.switch_to.frame('view8adf609c54f300b50154f46383e501a8_iframe')
+    
     btnCampana = driver.find_element(
         By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
     btnCampana.click()
@@ -626,16 +695,6 @@ def reporte1261(xpathBPO, xpathActivity, xpatkCampana):
     # *** MOV 1 ***
     # === Fecha D - 1 ===
     driver.switch_to.frame('view8adf609b6f1e1f27016f21e66fd10255_iframe')
-
-    fechaActual = datetime.now().date()
-    diaAnterior = fechaActual - timedelta(days=1)
-    # Formato mes/dia/anio
-    fechaD_1 = diaAnterior.strftime(r'%m/%d/%Y')
-
-    textBoxFecha = driver.find_element(By.ID, 'rpt_param_Value0')
-    textBoxFecha.clear()
-    textBoxFecha.send_keys(fechaD_1)
-    time.sleep(1)
 
     # === BPO ===
     btnBPO = driver.find_element(
@@ -790,6 +849,20 @@ def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
     # Dentro del Input source
     driver.switch_to.frame('view8adf649b5237e8b7015352f0feb700d9_iframe')
 
+    #Periodo
+    fechaInicio = fecha()['hoyH']
+    fechaFin = fecha()['mañanaH']
+
+    startTime = driver.find_element(By.XPATH, '//*[@id="rpt_param_Value0"]')
+    startTime.clear()
+    startTime.send_keys(fechaInicio)
+    time.sleep(1)
+
+    endTime = driver.find_element(By.XPATH, '//*[@id="rpt_param_Value1"]')
+    endTime.clear()
+    endTime.send_keys(fechaFin)
+    time.sleep(1)
+
     # === Campaign ===
     btnCampaign = driver.find_element(
         By.XPATH, '//*[@id="rpt_param_ComboxId2"]/div/div')
@@ -933,7 +1006,20 @@ def reporte43(xpathBPO):
 
     #dentro del input resource
     driver.switch_to.frame('view8adf609c511ba97601511ba994360060_iframe')
-    
+
+    #Periodo
+    fechaInicio = fecha()['hoyH']
+    fechaFin = fecha()['mañanaH']
+
+    startTime = driver.find_element(By.XPATH, '//*[@id="rpt_param_Value0"]')
+    startTime.clear()
+    startTime.send_keys(fechaInicio)
+    time.sleep(1)
+
+    endTime = driver.find_element(By.XPATH, '//*[@id="rpt_param_Value1"]')
+    endTime.clear()
+    endTime.send_keys(fechaFin)
+    time.sleep(1)
     # === BPO ====
     comboBox = driver.find_element(By.XPATH, '//*[@id="rpt_param_ComboxId2"]/div/div')
     comboBox.click()
@@ -1038,6 +1124,20 @@ def reporte26(xpathCampana, xpathBPO):
 
     #dentro del input resource
     driver.switch_to.frame('view8adf609c511ba97601511ba991d20056_iframe')
+
+    #Periodo
+    fechaInicio = fecha()['hoyF1']
+    fechaFin = fecha()['mañanaF1']
+
+    startTime = driver.find_element(By.XPATH, '//*[@id="rpt_param_Value0"]')
+    startTime.clear()
+    startTime.send_keys(fechaInicio)
+    time.sleep(1)
+
+    endTime = driver.find_element(By.XPATH, '//*[@id="rpt_param_Value1"]')
+    endTime.clear()
+    endTime.send_keys(fechaFin)
+    time.sleep(1)
 
     # === Campaign Name ===
     comboBoxCN = driver.find_element(By.XPATH, '//*[@id="rpt_param_ComboxId2"]/div/div')
@@ -1161,6 +1261,20 @@ def reporte194(xpathBPO):
     #dentro del input resource
     driver.switch_to.frame('view8adf609c5becac34015bf11be608063a_iframe')
 
+    #Periodo
+    fechaInicio = fecha()['hoyH2']
+    fechaFin = fecha()['mañanaH2']
+
+    startTime = driver.find_element(By.XPATH, '//*[@id="rpt_param_Value0"]')
+    startTime.clear()
+    startTime.send_keys(fechaInicio)
+    time.sleep(1)
+
+    endTime = driver.find_element(By.XPATH, '//*[@id="rpt_param_Value1"]')
+    endTime.clear()
+    endTime.send_keys(fechaFin)
+    time.sleep(1)
+
     # === BPO ====
     comboBoxBPO = driver.find_element(By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[3]/div/span/button/span[1]')
     comboBoxBPO.click()
@@ -1256,6 +1370,20 @@ def reporte192(xpathBPO, xpathAgentGroup):
     #dentro del input resource
     driver.switch_to.frame('view8adf609c5becac34015bf11be4bf0631_iframe')
 
+    #Periodo
+    fechaInicio = fecha()['hoyH2']
+    fechaFin = fecha()['mañanaH2']
+
+    startTime = driver.find_element(By.XPATH, '//*[@id="rpt_param_Value0"]')
+    startTime.clear()
+    startTime.send_keys(fechaInicio)
+    time.sleep(1)
+
+    endTime = driver.find_element(By.XPATH, '//*[@id="rpt_param_Value1"]')
+    endTime.clear()
+    endTime.send_keys(fechaFin)
+    time.sleep(1)
+
     # === BPO ====
     comboBoxBPO = driver.find_element(By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[3]/div/span/button/span[1]')
     comboBoxBPO.click()
@@ -1329,7 +1457,7 @@ def reporte192(xpathBPO, xpathAgentGroup):
     time.sleep(2)
 # +++++ Fin funcon Reporte 194 +++++
 
-
+"""
 # Descarga de reportes
 # === Reportes 1259 ===
 # Blindaje
@@ -1596,7 +1724,7 @@ subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 
 # === Fin Reportes 43 ===
-
+"""
 # === Reporte 26 ===
 #Retenciones Inbound
 titleC = 'RETENCIONESMOVILES'

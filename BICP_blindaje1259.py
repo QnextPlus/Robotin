@@ -225,6 +225,8 @@ confirmacionFinal.click()
 time.sleep(15)
 driver.switch_to.default_content()
 
+driver.refresh()
+
 #Cierra la aplicacion
 fun_logout = driver.find_element(By.ID, 'fun_logout')
 fun_logout.click()

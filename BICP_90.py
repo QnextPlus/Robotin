@@ -179,7 +179,7 @@ def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
     searchBtn.click()
     time.sleep(3)
 
-    reporte = driver.find_element(By.CLASS_NAME, 'grid_link1')
+    reporte = driver.find_element(By.ID, 'AID_100747')
     reporte.click()
     driver.switch_to.default_content()
     time.sleep(5)

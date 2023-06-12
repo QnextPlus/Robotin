@@ -8,7 +8,7 @@ contador = 0
 def ejecutaBICPMaster():
     global contador
     contador += 1
-    script_path = 'BICP_Master.py'
+    script_path = 'BICP_MasterD0.py'
     subprocess.call(['python', script_path])
     print(f'Numero de Ejecuciones: {contador}')
 

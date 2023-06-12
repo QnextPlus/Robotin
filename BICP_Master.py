@@ -237,7 +237,7 @@ def reporte1259(xpathCamapana):
     searchBtn.click()
     time.sleep(3)
 
-    reporte = driver.find_element(By.CLASS_NAME, 'grid_link1')
+    reporte = driver.find_element(By.XPATH, '//a[@title="1259"]')
     reporte.click()
     driver.switch_to.default_content()
     time.sleep(5)
@@ -298,6 +298,9 @@ def reporte1259(xpathCamapana):
     else:
         pass
 
+    driver.refresh()
+    time.sleep(1)
+    """
     driver.switch_to.default_content()
 
     cerrarInputParametros = driver.find_element(
@@ -311,7 +314,7 @@ def reporte1259(xpathCamapana):
 
     cerrarResourseManager = driver.find_element(By.ID, 'tabPage_800_close')
     cerrarResourseManager.click()
-    time.sleep(2)
+    time.sleep(2)"""
 # +++++ Fin Funcion Reporte 1259 +++++
 
 # +++++ 2. Funcion para descargar Reporte 401 +++++
@@ -347,7 +350,7 @@ def reporte401(xpathBPO, txtCampana, xpathCampana, xpathAgentWorkgroup='noDefini
     searchBtn.click()
     time.sleep(3)
 
-    reporte = driver.find_element(By.CLASS_NAME, 'grid_link1')
+    reporte = driver.find_element(By.XPATH, '//a[@title="401"]')
     reporte.click()
     driver.switch_to.default_content()
     time.sleep(5)
@@ -462,6 +465,9 @@ def reporte401(xpathBPO, txtCampana, xpathCampana, xpathAgentWorkgroup='noDefini
     else:
         pass
 
+    driver.refresh()
+    time.sleep(1)
+    """
     driver.switch_to.default_content()
 
     cerrarInputParametros = driver.find_element(
@@ -475,7 +481,7 @@ def reporte401(xpathBPO, txtCampana, xpathCampana, xpathAgentWorkgroup='noDefini
 
     cerrarResourseManager = driver.find_element(By.ID, 'tabPage_800_close')
     cerrarResourseManager.click()
-    time.sleep(2)
+    time.sleep(2)"""
 
 # +++++ Fin Funcion Reporte 401 +++++
 
@@ -509,7 +515,7 @@ def reporte112(xpathBPO):
     searchBtn.click()
     time.sleep(3)
 
-    reporte = driver.find_element(By.CLASS_NAME, 'grid_link1')
+    reporte = driver.find_element(By.XPATH, '//a[@title="112"]')
     reporte.click()
     driver.switch_to.default_content()
     time.sleep(5)
@@ -572,7 +578,10 @@ def reporte112(xpathBPO):
         cantidadExcelFinal = cantidadExcel()
     else:
         pass
-
+    
+    driver.refresh()
+    time.sleep(1)
+    """
     driver.switch_to.default_content()
 
     cerrarInputParametros = driver.find_element(
@@ -586,7 +595,7 @@ def reporte112(xpathBPO):
 
     cerrarResourseManager = driver.find_element(By.ID, 'tabPage_800_close')
     cerrarResourseManager.click()
-    time.sleep(2)
+    time.sleep(2)"""
 # +++++ Fin funcion reporte 112 +++++
 
 # +++++ 4. Funcion Reporte 1261 +++++
@@ -618,7 +627,7 @@ def reporte1261(xpathBPO, xpathActivity, xpatkCampana):
     searchBtn.click()
     time.sleep(3)
 
-    reporte = driver.find_element(By.CLASS_NAME, 'grid_link1')
+    reporte = driver.find_element(By.XPATH, '//a[@title="1261"]')
     reporte.click()
     driver.switch_to.default_content()
     time.sleep(5)
@@ -737,6 +746,9 @@ def reporte1261(xpathBPO, xpathActivity, xpatkCampana):
     else:
         pass 
     
+    driver.refresh()
+    time.sleep(1)
+    """
     driver.switch_to.default_content()
 
     cerrarInputParametros = driver.find_element(
@@ -750,7 +762,7 @@ def reporte1261(xpathBPO, xpathActivity, xpatkCampana):
 
     cerrarResourseManager = driver.find_element(By.ID, 'tabPage_800_close')
     cerrarResourseManager.click()
-    time.sleep(2)
+    time.sleep(2)"""
 # +++++ Fin Reporte 1261 +++++
 
 # +++++ 5. Funcion Reporte 90 +++++
@@ -782,7 +794,7 @@ def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
     searchBtn.click()
     time.sleep(3)
 
-    reporte = driver.find_element(By.CLASS_NAME, 'grid_link1')
+    reporte = driver.find_element(By.XPATH, '//a[@title="90"]')
     reporte.click()
     driver.switch_to.default_content()
     time.sleep(5)
@@ -879,7 +891,10 @@ def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
         cantidadExcelFinal = cantidadExcel()
     else:
         pass
-
+    
+    driver.refresh()
+    time.sleep(1)
+    """
     driver.switch_to.default_content()
 
     cerrarInputParametros = driver.find_element(
@@ -893,7 +908,7 @@ def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
 
     cerrarResourseManager = driver.find_element(By.ID, 'tabPage_800_close')
     cerrarResourseManager.click()
-    time.sleep(2)
+    time.sleep(2)"""
 # +++++ Fin Reporte 90 +++++
 
 # +++++ 6. Funcion Reporte 43 +++++
@@ -926,7 +941,7 @@ def reporte43(xpathBPO):
     searchBtn.click()
     time.sleep(3)
 
-    reporte = driver.find_element(By.CLASS_NAME, 'grid_link1')
+    reporte = driver.find_element(By.XPATH, '//a[@title="43"]')
     reporte.click()
     driver.switch_to.default_content()
     time.sleep(5)
@@ -985,6 +1000,9 @@ def reporte43(xpathBPO):
     else:
         pass
 
+    driver.refresh()
+    time.sleep(1)
+    """
     driver.switch_to.default_content()
 
     cerrarInputParametros = driver.find_element(By.ID, 'view8adf609c511ba97601511ba994360060_close')
@@ -997,7 +1015,7 @@ def reporte43(xpathBPO):
 
     cerrarResourseManager = driver.find_element(By.ID, 'tabPage_800_close')
     cerrarResourseManager.click()
-    time.sleep(2)
+    time.sleep(2)"""
 
 # +++++ Fin funcion Reporte 43 +++++
 
@@ -1031,7 +1049,7 @@ def reporte26(xpathCampana, xpathBPO):
     searchBtn.click()
     time.sleep(3)
 
-    reporte = driver.find_element(By.CLASS_NAME, 'grid_link1')
+    reporte = driver.find_element(By.XPATH, '//a[@title="26"]')
     reporte.click()
     driver.switch_to.default_content()
     time.sleep(5)
@@ -1108,6 +1126,9 @@ def reporte26(xpathCampana, xpathBPO):
     else:
         pass
     
+    driver.refresh()
+    time.sleep(1)
+    """
     driver.switch_to.default_content()
 
     cerrarInputParametros = driver.find_element(By.ID, 'view8adf609c511ba97601511ba991d20056_close')
@@ -1120,7 +1141,7 @@ def reporte26(xpathCampana, xpathBPO):
 
     cerrarResourseManager = driver.find_element(By.ID, 'tabPage_800_close')
     cerrarResourseManager.click()
-    time.sleep(2)
+    time.sleep(2)"""
 # +++++ Fin funcon Reporte 26 +++++
 
 # +++++ 8. Funcion Reporte 194 +++++
@@ -1153,7 +1174,7 @@ def reporte194(xpathBPO):
     searchBtn.click()
     time.sleep(3)
 
-    reporte = driver.find_element(By.CLASS_NAME, 'grid_link1')
+    reporte = driver.find_element(By.XPATH, '//a[@title="194"]')
     reporte.click()
     driver.switch_to.default_content()
     time.sleep(5)
@@ -1202,7 +1223,10 @@ def reporte194(xpathBPO):
         cantidadExcelFinal = cantidadExcel()
     else:
         pass
-
+    
+    driver.refresh()
+    time.sleep(1)
+    """
     driver.switch_to.default_content()
 
     cerrarInputParametros = driver.find_element(By.ID, 'view8adf609c5becac34015bf11be608063a_close')
@@ -1215,7 +1239,7 @@ def reporte194(xpathBPO):
 
     cerrarResourseManager = driver.find_element(By.ID, 'tabPage_800_close')
     cerrarResourseManager.click()
-    time.sleep(2)
+    time.sleep(2)"""
 # +++++ Fin funcon Reporte 194 +++++
 
 # +++++ 9. Funcion Reporte 192 +++++
@@ -1248,7 +1272,7 @@ def reporte192(xpathBPO, xpathAgentGroup):
     searchBtn.click()
     time.sleep(3)
 
-    reporte = driver.find_element(By.CLASS_NAME, 'grid_link1')
+    reporte = driver.find_element(By.XPATH, '//a[@title="194"]')
     reporte.click()
     driver.switch_to.default_content()
     time.sleep(5)
@@ -1314,6 +1338,9 @@ def reporte192(xpathBPO, xpathAgentGroup):
     else:
         pass
 
+    driver.refresh()
+    time.sleep(1)
+    """
     driver.switch_to.default_content()
 
     cerrarInputParametros = driver.find_element(By.ID, 'view8adf609c5becac34015bf11be4bf0631_close')
@@ -1326,7 +1353,7 @@ def reporte192(xpathBPO, xpathAgentGroup):
 
     cerrarResourseManager = driver.find_element(By.ID, 'tabPage_800_close')
     cerrarResourseManager.click()
-    time.sleep(2)
+    time.sleep(2)"""
 # +++++ Fin funcon Reporte 194 +++++
 
 

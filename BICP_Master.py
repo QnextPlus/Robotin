@@ -1356,6 +1356,121 @@ def reporte192(xpathBPO, xpathAgentGroup):
     time.sleep(2)"""
 # +++++ Fin funcon Reporte 194 +++++
 
+# +++++ 10. Funcion Reporte 418 +++++
+def reporte418(xpathCampana, xpathBPO, xpathAgentGroup):
+    #Menu principal
+    systemMenu = driver.find_element(By.ID, 'systemMenu')
+    systemMenu.click()
+    time.sleep(1)
+    #selecciona Resource manager del menu principal
+    resourceManager = driver.find_element(By.ID, 's_800')
+    resourceManager.click()
+    time.sleep(5)
+    #Dentro del Resource Manager
+    driver.switch_to.frame('tabPage_800_iframe')
+    driver.switch_to.frame('container')
+    lupa = driver.find_element(By.ID,'searchResource')
+    lupa.click()
+    time.sleep(1)
+    driver.switch_to.default_content()
+    driver.switch_to.default_content()
+
+    codigoCampana = 418
+    driver.switch_to.frame('searchResource_iframe')
+    textBox = driver.find_element(By.ID,'searchCondtion_input_value')
+    textBox.send_keys(codigoCampana)
+    time.sleep(1)
+
+    searchBtn = driver.find_element(By.ID, 'searchBtn')
+    searchBtn.click()
+    time.sleep(3)
+
+    reporte = driver.find_element(By.XPATH, '//a[@title="418"]')
+    reporte.click()
+    driver.switch_to.default_content()
+    time.sleep(5)
+
+    # Dentro del Input source
+    driver.switch_to.frame('view8adf609c64556ca701645a17ef88026a_iframe')
+
+    # === Campaign ===
+    btnCampaign = driver.find_element(By.XPATH, '//*[@id="CampaignViewControl"]/table/tbody/tr/td[5]/input')
+    btnCampaign.click()
+    time.sleep(2)
+
+    #Selecciona Campaign
+    checkBoxCampana = driver.find_element(By.XPATH, xpathCampana)
+    checkBoxCampana.click()
+    time.sleep(1)
+
+    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk.click()
+    time.sleep(1)
+
+    # === BPO ===
+    btnBPO = driver.find_element(By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
+    btnBPO.click()
+    time.sleep(2)
+
+    #Selecciona BPO
+    checkBoxBPO = driver.find_element(By.XPATH, xpathBPO)
+    checkBoxBPO.click()
+    time.sleep(2)
+
+    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk.click()
+    time.sleep(1)
+
+    # === Agent Group ===
+    btnActivity = driver.find_element(By.XPATH, '//*[@id="Agent Group NameViewControl"]/table/tbody/tr/td[5]/input')
+    btnActivity.click()
+    time.sleep(2)
+
+    #Selecciona Agent Group
+    checkBoxAgentGroup = driver.find_element(By.XPATH, xpathAgentGroup)
+    checkBoxAgentGroup.click()
+    time.sleep(2)
+
+    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk.click()
+    time.sleep(2)
+
+    BotonOk2 = driver.find_element(By.ID, 'rpt_param_OkBtn')
+    BotonOk2.click()
+    time.sleep(10)
+
+    #Descarga
+    cantidadExcelinicial = cantidadExcel()
+    # Esperar hasta que la imagen loading ya no esté visible tiempo maximo 300seg = 5 min
+    WebDriverWait(driver, 300).until_not(EC.visibility_of_element_located((By.ID, "loadingImg")))
+    
+    #Descarga
+    iconoDowloand = driver.find_element(By.CLASS_NAME, 'ico_download')
+    iconoDowloand.click()
+    time.sleep(1)
+
+    descargarExcel = driver.find_element(By.ID, 'downFullExcelMenuItemLiId')
+    descargarExcel.click()
+    time.sleep(1)
+
+    excel2013 = driver.find_element(By.ID, 'downExcel2007Id')
+    excel2013.click()
+    time.sleep(1)
+
+    confirmacionFinal = driver.find_element(By.ID, 'btnOk_downExcel2003Or2007WinId')
+    confirmacionFinal.click()
+    #time.sleep(15)
+    #Valida que la descarga concluya
+    cantidadExcelFinal = cantidadExcelinicial
+    while cantidadExcelFinal == cantidadExcelinicial:
+        time.sleep(1)
+        cantidadExcelFinal = cantidadExcel()
+    else:
+        pass
+
+    driver.refresh()
+    time.sleep(1)
+# +++++ Fin Reporte 418 +++++
 
 # Descarga de reportes
 # === Reportes 1259 ===
@@ -1643,6 +1758,29 @@ pathServer = r'carga/retencionesInbound/BICP/26' + f'{nombre}.xlsx'
 subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
 
 # === Fin Reportes 26 ===
+
+# === Reporte 418 ===
+labelC = 'RETENCIONESMOVILES'
+xpatkCampana = f"//input[@label='{labelC}']"
+
+labelBPO = 'BPOPERURETENCION'
+xpathBPO = f'//input[@type="checkbox" and @label="{labelBPO}"]'
+
+labelAG = '1070^BPOPERURETENCION'
+xpathAgentG= f'//input[@type="checkbox" and @label="{labelAG}"]'
+
+reporte418(xpatkCampana, xpathBPO, xpathAgentG)
+nombreAsignado = 'retencionesInbound_bicp_418_'
+nombre = nombreReporte(nombreAsignado)
+destino = directoryPath + r'/carga\retencionesInbound\BICP\418'
+renombrarReubicar(nombre, destino)
+
+# Enviamos los archivos descargados al Servidor
+pathLocal = destino + '/' + f'{nombre}.xlsx'
+pathServer = r'carga/retencionesInbound/BICP/418' + f'{nombre}.xlsx'
+subprocess.call(['python', 'ftp.py', pathLocal, pathServer])
+# === Fin Reportes 418 ===
+
 
 # Cierra la aplicacion
 def cerrarSesion():

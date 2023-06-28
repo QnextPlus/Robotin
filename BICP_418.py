@@ -153,7 +153,7 @@ else:
     pass
 
 # +++++ Funcion Reporte 418 +++++
-def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
+def reporte418(xpathCampana, xpathBPO, xpathAgentGroup):
     #Menu principal
     systemMenu = driver.find_element(By.ID, 'systemMenu')
     systemMenu.click()
@@ -181,7 +181,7 @@ def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
     searchBtn.click()
     time.sleep(3)
 
-    reporte = driver.find_element(By.CLASS_NAME, 'grid_link1')
+    reporte = driver.find_element(By.XPATH, '//a[@title="418"]')
     reporte.click()
     driver.switch_to.default_content()
     time.sleep(5)
@@ -204,31 +204,28 @@ def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
     time.sleep(1)
 #No tenemos acceso
     # === BPO ===
-    btnBPO = driver.find_element(By.XPATH, '//*[@id="rpt_param_ComboxId3"]/div/div')
+    btnBPO = driver.find_element(By.XPATH, '//*[@id="BPOViewControl"]/table/tbody/tr/td[5]/input')
     btnBPO.click()
     time.sleep(2)
 
     #Selecciona BPO
-    seleccionDefault = driver.find_element(By.XPATH, '/html/body/div[14]/ul/li[1]/span')
-    seleccionDefault.click()
-    time.sleep(1) 
-    
     checkBoxBPO = driver.find_element(By.XPATH, xpathBPO)
     checkBoxBPO.click()
     time.sleep(2)
 
-    btnBPO.click()
-    time.sleep(2)
+    BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
+    BotonOk.click()
+    time.sleep(1)
 
     # === Agent Group ===
-    btnActivity = driver.find_element(By.XPATH, '//*[@id="AgentWorkGroupViewControl"]/table/tbody/tr/td[5]/input')
+    btnActivity = driver.find_element(By.XPATH, '//*[@id="Agent Group NameViewControl"]/table/tbody/tr/td[5]/input')
     btnActivity.click()
     time.sleep(2)
 
     #Selecciona Agent Group
-    checkBoxCampana = driver.find_element(By.XPATH, xpathAgentGroup)
-    checkBoxCampana.click()
-    time.sleep(5)
+    checkBoxAgentGroup = driver.find_element(By.XPATH, xpathAgentGroup)
+    checkBoxAgentGroup.click()
+    time.sleep(2)
 
     BotonOk = driver.find_element(By.XPATH, '//*[contains(@id, "btnOk_rpt_param_")]/div/div')
     BotonOk.click()
@@ -267,7 +264,7 @@ def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
     cerrarResourseManager = driver.find_element(By.ID, 'tabPage_800_close')
     cerrarResourseManager.click()
     time.sleep(2)
-# +++++ Fin Reporte 90 +++++
+# +++++ Fin Reporte 418 +++++
 
 # === Reporte ===
 #
@@ -275,15 +272,15 @@ def reporte90(xpathCampana, xpathBPO, xpathAgentGroup):
 labelC = 'RETENCIONESMOVILES'
 xpatkCampana = f"//input[@label='{labelC}']"
 
-titleBPO = 'BPOPERURETENCION'
-xpathBPO = f'//li[@title="{titleBPO}"]'
+labelBPO = 'BPOPERURETENCION'
+xpathBPO = f'//input[@type="checkbox" and @label="{labelBPO}"]'
 
 labelAG = '1070^BPOPERURETENCION'
 xpathAgentG= f'//input[@type="checkbox" and @label="{labelAG}"]'
 
-reporte90(xpatkCampana, xpathBPO, xpathAgentG)
+reporte418(xpatkCampana, xpathBPO, xpathAgentG)
 
-# === Fin Reportes 90 ===
+# === Fin Reportes 418 ===
 
 #Cierra la aplicacion
 fun_logout = driver.find_element(By.ID, 'fun_logout')

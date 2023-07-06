@@ -1,5 +1,5 @@
-#usuarios_password = {Isac, Michael}
-user_pass = {'E8234353': 'JJJmm88***1', 'E8234180': 'JJJmm88***1'}
+#usuarios_password = {Isac, Michael, jose, lijhoan, merlhy, renzo}
+user_pass = {'E8234353': 'JJJmm88***1', 'E8234180': 'JJJmm88***1', 'E8234355':'RRRjj77---', 'E8234354': 'LLLzz92---', 'E8235446': 'CLaro2023/*/', 'E8235447': 'Merlhy2023*//'}
 elementos = user_pass.items()
 for user,passw in elementos:
     import time
